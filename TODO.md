@@ -1,5 +1,23 @@
 # TODO - Upgrades a opravy
 
+## 📋 Organizace stránky
+
+Struktura hlavní stránky (v pořadí shora dolů):
+
+1. **Hero** - Úvodní sekce
+2. **Services** - Sekce služeb
+3. **About Hristina and Master your face** - Sekce o Hristině a Master your face
+4. **Showcase** - Galerie obrázků
+   - Image gallery s obrázky
+   - Při hoveru: obrázek se zvětší o 5-10% a zobrazí se subtitle v obrázku
+5. **Feedback** - Sekce s feedbackem
+   - Prozatím vypnutá (neaktivní)
+   - Musí být připravena k rychlému zapnutí, jakmile budou k dispozici skutečné feedbacky
+6. **FAQ** - Často kladené otázky
+7. **Footer** - Patička stránky
+
+---
+
 ## 🔴 Kritické / Vysoká priorita
 
 ### Performance
