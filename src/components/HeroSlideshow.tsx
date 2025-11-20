@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import hero1 from "@/assets/hero-1.jpg";
 import hero2 from "@/assets/hero-2.jpg";
@@ -17,10 +16,6 @@ export const HeroSlideshow = () => {
 
     return () => clearInterval(timer);
   }, []);
-
-  const scrollToVideo = () => {
-    document.getElementById("video-section")?.scrollIntoView({ behavior: "smooth" });
-  };
 
   const scrollToServices = () => {
     document.getElementById("services")?.scrollIntoView({ behavior: "smooth" });
@@ -48,8 +43,11 @@ export const HeroSlideshow = () => {
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-primary-foreground mb-6 tracking-tight">
           MASTER YOUR FACE
         </h1>
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary-foreground mb-6 tracking-tight">
+          by Hristina Georgievska
+        </h2>
         <p className="text-lg md:text-xl lg:text-2xl text-primary-foreground/90 max-w-2xl mb-12 font-light">
-          Premium facial massage courses and portrait photography for individuals and companies
+          Personal make-up experience, corporate beauty workshop & professional portraits.
         </p>
         <Button
           variant="outline"
@@ -57,19 +55,11 @@ export const HeroSlideshow = () => {
           onClick={scrollToServices}
           className="bg-transparent border-2 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary transition-all duration-300"
         >
-          Explore Our Services
+          Vybrat z nabídky
         </Button>
       </div>
 
-      <button
-        onClick={scrollToVideo}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 text-primary-foreground animate-bounce"
-        aria-label="Scroll to content"
-      >
-        <ChevronDown className="w-8 h-8" />
-      </button>
-
-      <div className="absolute bottom-8 right-8 z-10 flex gap-2">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex gap-2">
         {slides.map((_, index) => (
           <button
             key={index}

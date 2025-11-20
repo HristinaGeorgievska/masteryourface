@@ -3,10 +3,11 @@ import { VideoSection } from "@/components/VideoSection";
 import { ServicesGrid } from "@/components/ServicesGrid";
 import { Showcase } from "@/components/Showcase";
 import { Testimonials } from "@/components/Testimonials";
-import { FAQ } from "@/components/FAQ";
-import { Footer } from "@/components/Footer";
+import { FAQ } from "@/components/FAQ"; 
+import Footer from "@/components/Footer";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { BackToTop } from "@/components/BackToTop";
+import Contact from "@/components/Contact";
 
 const Index = () => {
   return (
@@ -36,8 +37,13 @@ const Index = () => {
       <ScrollReveal>
         <FAQ />
       </ScrollReveal>
+
+      {/* 7. Contact */}
+      <ScrollReveal>
+        <Contact />
+      </ScrollReveal>
       
-      {/* 7. Footer */}
+      {/* 8. Footer */}
       <Footer />
       <BackToTop />
     </main>

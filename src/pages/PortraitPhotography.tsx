@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Footer } from "@/components/Footer";
+import Footer from "@/components/Footer";
 import { BackToTop } from "@/components/BackToTop";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { CourseGallery } from "@/components/CourseGallery";

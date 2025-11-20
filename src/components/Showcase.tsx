@@ -61,7 +61,7 @@ const defaultShowcaseItems: ShowcaseItem[] = [
 
 export const Showcase = ({ items = defaultShowcaseItems }: ShowcaseProps) => {
   return (
-    <section className="section-padding bg-background-secondary">
+    <section className="section-padding bg-background">
       <ScrollReveal>
         <div className="container-custom">
           <div className="text-center mb-16">

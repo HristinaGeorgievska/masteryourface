@@ -1,47 +1,41 @@
-import { Instagram, Facebook } from "lucide-react";
+import { Instagram, Mail } from "lucide-react";
 
-export const Footer = () => {
+const Footer = () => {
   return (
-    <footer className="bg-primary text-primary-foreground py-12">
-      <div className="container-custom">
-        <div className="text-center space-y-6">
-          <div className="flex items-center justify-center gap-6">
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:opacity-70 transition-opacity"
-              aria-label="Follow us on Instagram"
-            >
-              <Instagram className="w-5 h-5" />
-            </a>
-            <a
-              href="https://facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:opacity-70 transition-opacity"
-              aria-label="Follow us on Facebook"
-            >
-              <Facebook className="w-5 h-5" />
-            </a>
+    <footer className="bg-background-secondary py-12 px-6">
+      <div className="container mx-auto max-w-6xl">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="text-center md:text-left">
+            <p className="font-serif text-2xl font-semibold mb-2">
+              MASTER YOUR FACE
+            </p>
+            <p className="text-sm text-muted-foreground">
+              © 2024 Hristina Georgievska. Všechna práva vyhrazena.
+            </p>
           </div>
 
-          <div className="space-y-2">
+          <div className="flex gap-6">
             <a
-              href="https://portfolio.example.com"
+              href="mailto:info@masteryourface.cz"
+              className="text-foreground hover:text-primary transition-colors"
+              aria-label="Email"
+            >
+              <Mail className="h-5 w-5" />
+            </a>
+            <a
+              href="https://instagram.com/hristinageorgievska"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm hover:underline inline-block"
+              className="text-foreground hover:text-primary transition-colors"
+              aria-label="Instagram"
             >
-              View Portfolio
+              <Instagram className="h-5 w-5" />
             </a>
           </div>
-
-          <p className="text-sm opacity-80">
-            © {new Date().getFullYear()} Master Your Face. All rights reserved.
-          </p>
         </div>
       </div>
     </footer>
   );
 };
+
+export default Footer;
