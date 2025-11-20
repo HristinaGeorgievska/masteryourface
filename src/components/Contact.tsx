@@ -12,16 +12,39 @@ const Contact = () => {
     email: "",
     message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Here you would typically send the form data to a backend
-    // For now, we'll just show a success message
-    toast.success("Děkujeme, ozveme se vám co nejdříve.");
-    
-    // Reset form
-    setFormData({ name: "", email: "", message: "" });
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Něco se pokazilo. Zkuste to prosím znovu.');
+      }
+
+      toast.success("Děkujeme, ozveme se vám co nejdříve.");
+      setFormData({ name: "", email: "", message: "" });
+    } catch (error) {
+      console.error('Contact form error:', error);
+      toast.error(
+        error instanceof Error 
+          ? error.message 
+          : "Něco se pokazilo. Zkuste to prosím znovu."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -131,9 +154,10 @@ const Contact = () => {
 
               <Button 
                 type="submit" 
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                disabled={isSubmitting}
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground disabled:opacity-50"
               >
-                Odeslat zprávu
+                {isSubmitting ? "Odesílám..." : "Odeslat zprávu"}
               </Button>
             </form>
           </div>
