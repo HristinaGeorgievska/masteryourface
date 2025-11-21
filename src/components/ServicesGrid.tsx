@@ -31,10 +31,6 @@ const services = [
 ];
 
 export const ServicesGrid = () => {
-  const scrollToBooking = () => {
-    document.getElementById("booking")?.scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
     <section id="services" className="section-padding bg-background">
       <div className="container-custom">
@@ -64,21 +60,13 @@ export const ServicesGrid = () => {
                 <p className="text-text-secondary mb-6 leading-relaxed flex-1">
                   {service.description}
                 </p>
-                <div className="flex gap-3">
-                  <Button
-                    variant="outline"
-                    className="flex-1 border-2 hover:bg-primary hover:text-primary-foreground transition-all duration-300"
-                    asChild
-                  >
-                    <Link to={service.link}>Learn More</Link>
-                  </Button>
-                  <Button
-                    onClick={scrollToBooking}
-                    className="flex-1"
-                  >
-                    Book Now
-                  </Button>
-                </div>
+                <Button
+                  variant="outline"
+                  className="w-full border-2 hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+                  asChild
+                >
+                  <Link to={service.link}>Zobrazit detaily</Link>
+                </Button>
               </CardContent>
             </Card>
           ))}
