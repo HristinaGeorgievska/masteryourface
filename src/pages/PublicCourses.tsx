@@ -3,8 +3,10 @@ import { BackToTop } from "@/components/BackToTop";
 import { Clock, MapPin, Package, Users, Sparkles, CheckCircle2, UsersRound, Palette, Sparkle, Heart, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import servicePublic from "@/assets/service-public.jpg";
+import { useCourses } from "@/hooks/useCourses";
 
 export default function PublicCourses() {
+  const { data: courses, isLoading, error } = useCourses();
 
   return (
     <div className="min-h-screen">
@@ -154,69 +156,48 @@ export default function PublicCourses() {
         <div className="container mx-auto max-w-6xl px-6 md:px-8">
           <h2 className="text-3xl md:text-4xl font-bold mb-12 text-left">Nadcházející termíny</h2>
           
+          {isLoading && <p className="text-center text-lg text-text-secondary">Načítání termínů...</p>}
+          {error && <p className="text-center text-lg text-red-500">Nepodařilo se načíst termíny.</p>}
+          
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {/* Placeholder Item 1 */}
-            <div className="bg-background border border-border rounded-xl p-6 hover:shadow-lg transition-shadow">
-              <div className="flex justify-between items-start mb-4">
-                <div className="flex items-center gap-2 text-primary">
-                  <MapPin className="w-5 h-5" />
-                  <span className="font-semibold">Praha</span>
+            {courses?.map((course) => (
+              <div key={course.id} className="bg-background border border-border rounded-xl p-6 hover:shadow-lg transition-shadow">
+                <div className="flex justify-between items-start mb-4">
+                  <div className="flex items-center gap-2 text-primary">
+                    <MapPin className="w-5 h-5" />
+                    <span className="font-semibold">{course.city}</span>
+                  </div>
+                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${course.status ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                    {course.status ? 'Volná místa' : 'Obsazeno'}
+                  </span>
                 </div>
-                <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
-                  Volná místa
-                </span>
-              </div>
-              <h3 className="text-xl font-bold mb-2">15. Března 2024</h3>
-              <div className="flex items-center gap-2 text-text-secondary mb-6">
-                <Clock className="w-4 h-4" />
-                <span>10:00 - 15:00</span>
-              </div>
-              <button className="w-full py-3 px-4 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors">
-                Rezervovat místo
-              </button>
-            </div>
-
-            {/* Placeholder Item 2 */}
-            <div className="bg-background border border-border rounded-xl p-6 hover:shadow-lg transition-shadow">
-              <div className="flex justify-between items-start mb-4">
-                <div className="flex items-center gap-2 text-primary">
-                  <MapPin className="w-5 h-5" />
-                  <span className="font-semibold">Brno</span>
+                <h3 className="text-xl font-bold mb-2">{course.date}</h3>
+                <div className="flex items-center gap-2 text-text-secondary mb-2">
+                  <Clock className="w-4 h-4" />
+                  <span>{course.timeRange}</span>
                 </div>
-                <span className="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm font-medium">
-                  Obsazeno
-                </span>
+                {course.address && (
+                   <div className="text-sm text-text-secondary mb-6">
+                     {course.address}
+                   </div>
+                )}
+                
+                {course.status ? (
+                    <a 
+                      href={course.bookingUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block w-full py-3 px-4 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors text-center"
+                    >
+                      Rezervovat místo
+                    </a>
+                ) : (
+                    <button disabled className="w-full py-3 px-4 bg-gray-200 text-gray-500 rounded-lg font-medium cursor-not-allowed">
+                      Plně obsazeno
+                    </button>
+                )}
               </div>
-              <h3 className="text-xl font-bold mb-2">22. Března 2024</h3>
-              <div className="flex items-center gap-2 text-text-secondary mb-6">
-                <Clock className="w-4 h-4" />
-                <span>10:00 - 15:00</span>
-              </div>
-              <button disabled className="w-full py-3 px-4 bg-gray-200 text-gray-500 rounded-lg font-medium cursor-not-allowed">
-                Plně obsazeno
-              </button>
-            </div>
-
-            {/* Placeholder Item 3 */}
-            <div className="bg-background border border-border rounded-xl p-6 hover:shadow-lg transition-shadow">
-              <div className="flex justify-between items-start mb-4">
-                <div className="flex items-center gap-2 text-primary">
-                  <MapPin className="w-5 h-5" />
-                  <span className="font-semibold">Ostrava</span>
-                </div>
-                <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
-                  Volná místa
-                </span>
-              </div>
-              <h3 className="text-xl font-bold mb-2">5. Dubna 2024</h3>
-              <div className="flex items-center gap-2 text-text-secondary mb-6">
-                <Clock className="w-4 h-4" />
-                <span>10:00 - 15:00</span>
-              </div>
-              <button className="w-full py-3 px-4 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors">
-                Rezervovat místo
-              </button>
-            </div>
+            ))}
           </div>
         </div>
       </section>
