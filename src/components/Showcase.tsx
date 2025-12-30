@@ -6,104 +6,82 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import galleryPublic1 from "@/assets/gallery-public-1.jpg";
-import galleryPublic2 from "@/assets/gallery-public-2.jpg";
-import galleryPublic3 from "@/assets/gallery-public-3.jpg";
-import galleryPhotography1 from "@/assets/gallery-photography-1.jpg";
-import galleryPhotography2 from "@/assets/gallery-photography-2.jpg";
-import galleryPhotography3 from "@/assets/gallery-photography-3.jpg";
-import galleryCorporate1 from "@/assets/gallery-corporate-1.jpg";
-import galleryCorporate2 from "@/assets/gallery-corporate-2.jpg";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useShowcase } from "@/hooks/useShowcase";
 
-interface ShowcaseItem {
-  image: string;
-  subtitle: string;
-}
+export const Showcase = () => {
+  const { data: items, isLoading, error } = useShowcase();
 
-interface ShowcaseProps {
-  items?: ShowcaseItem[];
-}
+  if (error) {
+    console.error("Failed to load showcase items:", error);
+    return null;
+  }
 
-const defaultShowcaseItems: ShowcaseItem[] = [
-  {
-    image: galleryPublic1,
-    subtitle: "Public Course Experience",
-  },
-  {
-    image: galleryPhotography1,
-    subtitle: "Portrait Photography Session",
-  },
-  {
-    image: galleryCorporate1,
-    subtitle: "Corporate Wellness Workshop",
-  },
-  {
-    image: galleryPublic2,
-    subtitle: "Facial Massage Techniques",
-  },
-  {
-    image: galleryPhotography2,
-    subtitle: "Professional Headshots",
-  },
-  {
-    image: galleryCorporate2,
-    subtitle: "Team Building Session",
-  },
-  {
-    image: galleryPublic3,
-    subtitle: "Hands-On Learning",
-  },
-  {
-    image: galleryPhotography3,
-    subtitle: "Natural Beauty Captured",
-  },
-];
+  if (!isLoading && (!items || items.length === 0)) {
+    return null;
+  }
 
-export const Showcase = ({ items = defaultShowcaseItems }: ShowcaseProps) => {
   return (
     <section className="section-padding bg-background">
       <ScrollReveal>
         <div className="container-custom">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">Showcase</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">Portfolio</h2>
           </div>
 
           <Carousel
             opts={{
               align: "start",
               loop: true,
-              skipSnaps: false,
             }}
-            className="w-full max-w-6xl mx-auto"
+            className="w-full max-w-7xl mx-auto"
           >
             <CarouselContent>
-              {items.map((item, index) => (
-                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                  <div className="p-2">
-                    <div className="group relative aspect-[4/3] overflow-hidden rounded-lg transition-all duration-500">
-                      <img
-                        src={item.image}
-                        alt={item.subtitle}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.08]"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                        <p className="text-primary-foreground text-lg font-semibold">
-                          {item.subtitle}
-                        </p>
+              {isLoading
+                ? Array.from({ length: 4 }).map((_, index) => (
+                    <CarouselItem
+                      key={index}
+                      className="sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                    >
+                      <div className="p-2">
+                        <Skeleton className="aspect-[11/15] rounded-lg" />
                       </div>
-                    </div>
-                  </div>
-                </CarouselItem>
-              ))}
+                    </CarouselItem>
+                  ))
+                : items?.map((item) => (
+                    <CarouselItem
+                      key={item.id}
+                      className="sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                    >
+                      <div className="p-2">
+                        <div className="group relative aspect-[11/15] overflow-hidden rounded-lg shadow-md">
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-90"
+                            loading="lazy"
+                          />
+                          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/70 to-transparent p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            <div className="text-white">
+                              <p className="text-xs font-semibold uppercase tracking-widest opacity-90 mb-2">
+                                {item.client}
+                              </p>
+                              <p className="text-2xl font-bold mb-2">{item.name}</p>
+                              <p className="text-xs font-medium opacity-70">
+                                Foto: {item.photographer}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </CarouselItem>
+                  ))}
             </CarouselContent>
-            <CarouselPrevious className="hidden md:flex" />
-            <CarouselNext className="hidden md:flex" />
+            <CarouselPrevious className="hidden md:flex -left-12" />
+            <CarouselNext className="hidden md:flex -right-12" />
           </Carousel>
         </div>
       </ScrollReveal>
     </section>
   );
 };
-

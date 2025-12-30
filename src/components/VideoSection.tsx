@@ -1,3 +1,5 @@
+import hristinaImg from '../assets/hristinageorgievska.jpg';
+
 export const VideoSection = () => {
   return (
     <section id="video-section" className="section-padding bg-background-secondary">
@@ -5,7 +7,7 @@ export const VideoSection = () => {
         <div className="grid gap-12 md:grid-cols-2 items-center">
           <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl min-h-[320px] bg-muted">
             <img
-              src="/images/hristina-georgievska.jpg"
+              src={hristinaImg}
               alt="Hristina Georgievska"
               className="w-full h-full object-cover"
               loading="lazy"
