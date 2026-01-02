@@ -5,22 +5,46 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Mail, Phone, Instagram } from "lucide-react";
 import { toast } from "sonner";
+import { z } from "zod";
+
+const contactSchema = z.object({
+  name: z.string().min(2, "Jméno musí mít alespoň 2 znaky"),
+  email: z.string().email("Neplatný formát e-mailu"),
+  message: z.string().min(10, "Zpráva musí mít alespoň 10 znaků"),
+});
+
+type ContactFormData = z.infer<typeof contactSchema>;
 
 interface ContactProps {
   showHeading?: boolean;
 }
 
 const Contact = ({ showHeading = true }: ContactProps) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ContactFormData>({
     name: "",
     email: "",
     message: "",
   });
+  const [errors, setErrors] = useState<Partial<Record<keyof ContactFormData, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setErrors({});
+
+    const result = contactSchema.safeParse(formData);
+
+    if (!result.success) {
+      const formattedErrors: Partial<Record<keyof ContactFormData, string>> = {};
+      result.error.issues.forEach((issue) => {
+        const path = issue.path[0] as keyof ContactFormData;
+        formattedErrors[path] = issue.message;
+      });
+      setErrors(formattedErrors);
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       const response = await fetch('/api/contact', {
@@ -131,8 +155,11 @@ const Contact = ({ showHeading = true }: ContactProps) => {
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="mt-2"
+                  className={`mt-2 ${errors.name ? "border-destructive" : ""}`}
                 />
+                {errors.name && (
+                  <p className="text-sm text-destructive mt-1">{errors.name}</p>
+                )}
               </div>
 
               <div>
@@ -143,8 +170,11 @@ const Contact = ({ showHeading = true }: ContactProps) => {
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="mt-2"
+                  className={`mt-2 ${errors.email ? "border-destructive" : ""}`}
                 />
+                {errors.email && (
+                  <p className="text-sm text-destructive mt-1">{errors.email}</p>
+                )}
               </div>
 
               <div>
@@ -154,8 +184,11 @@ const Contact = ({ showHeading = true }: ContactProps) => {
                   rows={5}
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="mt-2"
+                  className={`mt-2 ${errors.message ? "border-destructive" : ""}`}
                 />
+                {errors.message && (
+                  <p className="text-sm text-destructive mt-1">{errors.message}</p>
+                )}
               </div>
 
               <Button 

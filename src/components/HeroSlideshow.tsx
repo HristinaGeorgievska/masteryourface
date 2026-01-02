@@ -34,6 +34,9 @@ export const HeroSlideshow = () => {
             src={slide}
             alt={`Master Your Face - Slide ${index + 1}`}
             className="h-full w-full object-cover"
+            loading={index === 0 ? "eager" : "lazy"}
+            fetchPriority={index === 0 ? "high" : "auto"}
+            decoding="async"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50" />
         </div>
