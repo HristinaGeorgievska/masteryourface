@@ -4,9 +4,9 @@ import { contentfulClient, ShowcaseEntry } from "../lib/contentful";
 export interface ShowcaseItem {
   id: string;
   image: string;
-  name: string;
-  client: string;
-  photographer: string;
+  name?: string;
+  client?: string;
+  photographer?: string;
   order?: number;
 }
 

@@ -16,9 +16,9 @@ export interface CourseFields {
 export type CourseEntry = Entry<CourseFields>;
 
 export interface ShowcaseItemFields {
-  name: string;
-  client: string;
-  photographer: string;
+  name?: string;
+  client?: string;
+  photographer?: string;
   image: Asset;
   order?: number;
 }

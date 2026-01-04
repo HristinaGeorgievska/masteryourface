@@ -62,14 +62,20 @@ export const Showcase = () => {
                             loading="lazy"
                           />
                           <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/70 to-transparent p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            <div className="text-white">
-                              <p className="text-xs font-semibold uppercase tracking-widest opacity-90 mb-2">
-                                {item.client}
-                              </p>
-                              <p className="text-2xl font-bold mb-2">{item.name}</p>
-                              <p className="text-xs font-medium opacity-70">
-                                Foto: {item.photographer}
-                              </p>
+                            <div className="text-white flex flex-col justify-end gap-2">
+                              {item.client && (
+                                <p className="text-xs font-semibold uppercase tracking-widest opacity-90">
+                                  {item.client}
+                                </p>
+                              )}
+                              {item.name && (
+                                <p className="text-2xl font-bold">{item.name}</p>
+                              )}
+                              {item.photographer && (
+                                <p className="text-xs font-medium opacity-70">
+                                  Foto: {item.photographer}
+                                </p>
+                              )}
                             </div>
                           </div>
                         </div>
