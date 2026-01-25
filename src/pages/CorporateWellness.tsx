@@ -40,13 +40,13 @@ export default function CorporateWellness() {
                 <div className="flex items-start gap-3">
                   <Palette className="w-5 h-5 mt-1 flex-shrink-0" />
                   <div>
-                    <span className="font-semibold">S čím budete pracovat:</span> Účastnice mohou pracovat se svou běžnou kosmetikou. Pokud něco chybí, Hristina doplní kompletní zázemí — včetně make-upu Armani Beauty — tak, aby výsledek působil přirozeně a odpovídal profesionálnímu prostředí.
+                    <span className="font-semibold">S čím budete pracovat:</span> Účastnice mohou pracovat se svou běžnou kosmetikou. Pokud něco chybí, Hristina doplní kompletní zázemí — včetně make-upu Armani Beauty a pleťové péče WELEDA, se kterými spolupracuje Hristina dlouhodobě — tak, aby výsledek působil přirozeně a odpovídal profesionálnímu prostředí.
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <Sparkle className="w-5 h-5 mt-1 flex-shrink-0" />
                   <div>
-                    <span className="font-semibold">Atmosféra:</span> Stylová, příjemná a uvolněná. Prosecco, lehký catering a profesionální vedení vytvářejí prostředí, kde ženy mohou zpomalit, načerpat inspiraci a věnovat čas samy sobě — i v rámci pracovního dne.
+                    <span className="font-semibold">Atmosféra:</span> Stylová, příjemná a uvolněná. Šampaňské, lehký catering a profesionální vedení vytvářejí prostředí, kde ženy mohou zpomalit, načerpat inspiraci a věnovat čas samy sobě — i v rámci pracovního dne.
                   </div>
                 </div>
                 <div className="flex items-start gap-3">

@@ -11,6 +11,7 @@ export interface FormattedCourse {
   timeRange: string;
   status: boolean;
   bookingUrl: string;
+  heroImage?: string;
 }
 
 const fetchCourses = async (): Promise<FormattedCourse[]> => {
@@ -33,6 +34,15 @@ const fetchCourses = async (): Promise<FormattedCourse[]> => {
     const startTime = format(dateObj, "HH:mm");
     const endTime = format(new Date(dateObj.getTime() + 5 * 60 * 60 * 1000), "HH:mm"); // Assuming 5 hours as per original UI "cca 5 hodin"
 
+    let heroImageUrl = undefined;
+    if (fields.hero && fields.hero.fields && fields.hero.fields.file && fields.hero.fields.file.url) {
+      heroImageUrl = fields.hero.fields.file.url;
+      // Ensure protocol is present (Contentful often returns //domain.com)
+      if (heroImageUrl.startsWith("//")) {
+        heroImageUrl = `https:${heroImageUrl}`;
+      }
+    }
+
     return {
       id: item.sys.id,
       city: fields.city,
@@ -41,6 +51,7 @@ const fetchCourses = async (): Promise<FormattedCourse[]> => {
       timeRange: `${startTime} - ${endTime}`,
       status: fields.status,
       bookingUrl: fields.bookingUrl,
+      heroImage: heroImageUrl,
     };
   });
 };
@@ -51,4 +62,3 @@ export const useCourses = () => {
     queryFn: fetchCourses,
   });
 };
-

@@ -11,6 +11,7 @@ export interface CourseFields {
   date: string; // ISO 8601 date string
   status: boolean;
   bookingUrl: string;
+  hero?: Asset; // Made optional just in case existing entries don't have it yet, though typically it's expected
 }
 
 export type CourseEntry = Entry<CourseFields>;

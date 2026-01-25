@@ -12,7 +12,7 @@ const faqs = [
   },
   {
     question: "Co si mám na workshop přinést?",
-    answer: "Stačí vaše běžná kosmetika, se kterou pracujete doma. Pokud něco chybí, doplníme vše na místě — včetně make-upu Armani Beauty.",
+    answer: "Stačí vaše běžná kosmetika, se kterou pracujete doma. Pokud něco chybí, doplníme vše na místě — včetně make-upu Armani Beauty a pleťové péče WELEDA, se kterými spolupracuje Hristina dlouhodobě.",
   },
   {
     question: "Mohu používat vlastní kosmetiku?",

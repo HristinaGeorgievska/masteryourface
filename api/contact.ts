@@ -1,47 +1,33 @@
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 import nodemailer from 'nodemailer';
 
-export default async function handler(req: Request): Promise<Response> {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  // CORS setup for Vercel
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
   // Handle CORS preflight
   if (req.method === 'OPTIONS') {
-    return new Response(null, {
-      status: 204,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
-      },
-    });
+    return res.status(204).end();
   }
 
   if (req.method !== 'POST') {
-    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
-      status: 405,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    const body = await req.json();
-    const { name, email, message } = body;
+    const { name, email, message } = req.body;
 
     // Validate required fields
     if (!name || !email || !message) {
-      return new Response(
-        JSON.stringify({ error: 'Missing required fields' }),
-        {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
+      return res.status(400).json({ error: 'Missing required fields' });
     }
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      return new Response(JSON.stringify({ error: 'Invalid email format' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return res.status(400).json({ error: 'Invalid email format' });
     }
 
     // Get SMTP configuration from environment variables
@@ -53,13 +39,7 @@ export default async function handler(req: Request): Promise<Response> {
 
     if (!smtpUser || !smtpPass) {
       console.error('SMTP credentials not configured');
-      return new Response(
-        JSON.stringify({ error: 'Email service not configured' }),
-        {
-          status: 500,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
+      return res.status(500).json({ error: 'Email service not configured' });
     }
 
     // Create transporter
@@ -76,9 +56,10 @@ export default async function handler(req: Request): Promise<Response> {
     // Send email
     await transporter.sendMail({
       from: `"Master Your Face" <${smtpUser}>`,
-      to: recipientEmail, // Can be a string or array for multiple recipients
+      to: recipientEmail,
       replyTo: email,
       subject: `Nový kontakt z webu Master Your Face - ${name}`,
+      text: `Nový kontakt z webu\n\nJméno: ${name}\nEmail: ${email}\nZpráva:\n${message}`,
       html: `
         <h2>Nový kontakt z webu</h2>
         <p><strong>Jméno:</strong> ${name}</p>
@@ -86,38 +67,14 @@ export default async function handler(req: Request): Promise<Response> {
         <p><strong>Zpráva:</strong></p>
         <p>${message.replace(/\n/g, '<br>')}</p>
       `,
-      text: `
-        Nový kontakt z webu
-        
-        Jméno: ${name}
-        Email: ${email}
-        Zpráva:
-        ${message}
-      `,
     });
 
-    return new Response(
-      JSON.stringify({ 
-        success: true, 
-        message: 'Contact form submitted successfully' 
-      }),
-      {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-      }
-    );
+    return res.status(200).json({ 
+      success: true, 
+      message: 'Contact form submitted successfully' 
+    });
   } catch (error) {
     console.error('Contact form error:', error);
-    return new Response(
-      JSON.stringify({ error: 'Internal server error' }),
-      {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }
-

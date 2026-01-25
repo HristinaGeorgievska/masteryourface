@@ -34,7 +34,7 @@ export default function PublicCourses() {
                 <div className="flex items-start gap-3">
                   <Palette className="w-5 h-5 mt-1 flex-shrink-0" />
                   <div>
-                    <span className="font-semibold">S čím budete pracovat:</span> Během workshopu pracujete se svou běžnou kosmetikou. Pokud něco chybí, Hristina doplní kompletní zázemí — včetně make-upu Armani Beauty — tak, aby výsledek působil co nejpřirozeněji a fungoval pro každou ženu individuálně.
+                    <span className="font-semibold">S čím budete pracovat:</span> Během workshopu pracujete se svou běžnou kosmetikou. Pokud něco chybí, Hristina doplní kompletní zázemí — včetně make-upu Armani Beauty a pleťové péče WELEDA, se kterými spolupracuje Hristina dlouhodobě — tak, aby výsledek působil co nejpřirozeněji a fungoval pro každou ženu individuálně.
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -46,13 +46,13 @@ export default function PublicCourses() {
                 <div className="flex items-start gap-3">
                   <Heart className="w-5 h-5 mt-1 flex-shrink-0" />
                   <div>
-                    <span className="font-semibold">Individuální přístup:</span> Na závěr nabízí Hristina krátkou osobní konzultaci — projde vaše produkty, upraví techniku a odpoví na otázky, které vznikly v průběhu workshopu.
+                    <span className="font-semibold">Individuální přístup:</span> Na závěr nabízí Hristina krátkou osobní konzultaci — projde vaše produkty a odpoví na otázky, které vznikly v průběhu workshopu.
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 mt-1 flex-shrink-0" />
                   <div>
-                    <span className="font-semibold">Kde:</span> Praha • Brno • Ostrava
+                    <span className="font-semibold">Kde:</span> Praha • Brno • Bratislava
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
