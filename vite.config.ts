@@ -3,6 +3,16 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
 import Sitemap from "vite-plugin-sitemap";
+import prerender from "@prerenderer/rollup-plugin";
+import puppeteerRenderer from "@prerenderer/renderer-puppeteer";
+import { imagetools } from "vite-imagetools";
+
+const ROUTES_TO_PRERENDER = [
+  '/',
+  '/individual',
+  '/business',
+  '/portrait'
+];
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -12,16 +22,27 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(),
+    imagetools(),
     Sitemap({
       hostname: 'https://masteryourface.cz',
-      dynamicRoutes: [
-        '/',
-        '/public-courses',
-        '/corporate-wellness',
-        '/portrait-photography'
-      ]
+      dynamicRoutes: ROUTES_TO_PRERENDER
     }),
-    mode === "development" && componentTagger()
+    mode === "development" && componentTagger(),
+    mode === "production" && prerender({
+      routes: ROUTES_TO_PRERENDER,
+      renderer: puppeteerRenderer,
+      rendererOptions: {
+        renderAfterDocumentEvent: 'prerender-ready',
+        timeout: 30000,
+      },
+      postProcess(renderedRoute) {
+        // Ensure proper doctype and clean HTML
+        renderedRoute.html = renderedRoute.html
+          .replace(/<!--.*?-->/gs, '') // Remove HTML comments
+          .replace(/<script[^>]*data-prerender[^>]*>.*?<\/script>/gs, ''); // Remove prerender scripts
+        return renderedRoute;
+      }
+    })
   ].filter(Boolean),
   resolve: {
     alias: {

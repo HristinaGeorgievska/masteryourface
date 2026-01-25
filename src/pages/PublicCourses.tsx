@@ -4,12 +4,18 @@ import { Clock, MapPin, Package, Users, Sparkles, CheckCircle2, UsersRound, Pale
 import { Link } from "react-router-dom";
 import servicePublic from "@/assets/service-public.jpg";
 import { useCourses } from "@/hooks/useCourses";
+import { SEO } from "@/components/SEO";
 
 export default function PublicCourses() {
   const { data: courses, isLoading, error } = useCourses();
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Individuální make-up kurzy"
+        description="Objevte make-up, který dává smysl. Praktický workshop s Hristinou Georgievskou v Praze, Brně a Bratislavě. Luxusní atmosféra, osobní přístup."
+        path="/individual"
+      />
       {/* Back to Home Button */}
       <Link
         to="/"
@@ -24,7 +30,7 @@ export default function PublicCourses() {
         <div className="container mx-auto max-w-6xl px-6 md:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">MASTER YOUR FACE — Individual</h2>
+              <h1 className="text-3xl md:text-4xl font-bold mb-4">MASTER YOUR FACE — Individual</h1>
               <p className="text-xl text-text-secondary mb-2">Personal Make-Up Experience</p>
               <p className="text-lg text-text-secondary mb-8 leading-relaxed">
                 Objevte make-up, který konečně dává smysl — jednoduchý, přirozený a použitelný v běžném životě.
@@ -67,7 +73,7 @@ export default function PublicCourses() {
             <div className="relative aspect-[3/4] rounded-lg overflow-hidden shadow-xl">
               <img
                 src={servicePublic}
-                alt="Course experience"
+                alt="Účastnice individuálního make-up kurzu Master Your Face"
                 className="w-full h-full object-cover"
               />
             </div>

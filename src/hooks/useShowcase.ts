@@ -13,8 +13,8 @@ export interface ShowcaseItem {
 const fetchShowcase = async (): Promise<ShowcaseItem[]> => {
   const response = await contentfulClient.getEntries<ShowcaseEntry>({
     content_type: "showcaseItem",
-    order: "fields.order",
-  } as any);
+    order: ["fields.order"],
+  });
 
   return response.items.map((item) => {
     const fields = item.fields;

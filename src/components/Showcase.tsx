@@ -57,7 +57,7 @@ export const Showcase = () => {
                         <div className="group relative aspect-[11/15] overflow-hidden rounded-lg shadow-md">
                           <img
                             src={item.image}
-                            alt={item.name}
+                            alt={item.name || item.client || "Portfolio ukázka - Master Your Face"}
                             className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-90"
                             loading="lazy"
                           />

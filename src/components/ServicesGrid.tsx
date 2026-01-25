@@ -12,21 +12,21 @@ const services = [
     description: "Objevte make-up, který konečně dává smysl — jednoduchý, přirozený a použitelný v běžném životě.",
     image: servicePublic,
     icon: Users,
-    link: "/public-courses",
+    link: "/individual",
   },
   {
     title: "MASTER YOUR FACE — Business",
     description: "Firemní workshop make-upu — praktický zážitek, který zaměstnankyním přidá sebevědomí a profesionální vzhled.",
     image: serviceCorporate,
     icon: Building2,
-    link: "/corporate-wellness",
+    link: "/business",
   },
   {
     title: "MASTER YOUR IMAGE — Portraits",
     description: "Profesionální portréty přímo ve firmě — rychlé, bez přesunů, přirozené a reprezentativní.",
     image: servicePhotography,
     icon: Camera,
-    link: "/portrait-photography",
+    link: "/portrait",
   },
 ];
 

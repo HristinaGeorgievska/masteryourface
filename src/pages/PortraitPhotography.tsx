@@ -4,11 +4,17 @@ import { BackToTop } from "@/components/BackToTop";
 import { Clock, MapPin, Package, Camera, ArrowLeft, CheckCircle2, Image, Building2, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import servicePhotography from "@/assets/service-photography.jpg";
+import { SEO } from "@/components/SEO";
 
 export default function PortraitPhotography() {
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Profesionální firemní portréty"
+        description="Portrétní focení přímo ve vaší firmě. Mobilní ateliér, make-up a styling v ceně. Reprezentativní výsledky bez přesunů a časových ztrát."
+        path="/portrait"
+      />
       {/* Back to Home Button */}
       <Link
         to="/"
@@ -23,7 +29,7 @@ export default function PortraitPhotography() {
         <div className="container-custom">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">MASTER YOUR IMAGE — Portraits</h2>
+              <h1 className="text-3xl md:text-4xl font-bold mb-4">MASTER YOUR IMAGE — Portraits</h1>
               <p className="text-xl text-text-secondary mb-2">Professional Corporate Portraits</p>
               <p className="text-lg text-text-secondary mb-8 leading-relaxed">
                 MASTER YOUR IMAGE přináší profesionální portrétní focení přímo do prostředí vaší firmy. 
@@ -55,7 +61,7 @@ export default function PortraitPhotography() {
             <div className="relative aspect-[3/4] rounded-lg overflow-hidden shadow-xl">
               <img
                 src={servicePhotography}
-                alt="Portrait session"
+                alt="Profesionální firemní portrétní focení Master Your Image"
                 className="w-full h-full object-cover"
               />
             </div>

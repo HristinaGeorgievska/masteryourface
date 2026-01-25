@@ -39,8 +39,9 @@ export const CourseGallery = ({ images, title = "Course Gallery", subtitle = "Se
                     <div className="relative aspect-square overflow-hidden rounded-lg transition-shadow">
                       <img
                         src={image}
-                        alt={`Course image ${index + 1}`}
+                        alt={`${title} - obrázek ${index + 1}`}
                         className="w-full h-full object-cover"
+                        loading="lazy"
                       />
                     </div>
                   </div>

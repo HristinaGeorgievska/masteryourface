@@ -1,9 +1,54 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import nodemailer from 'nodemailer';
 
+// Allowed origins for CORS
+const ALLOWED_ORIGINS = [
+  'https://masteryourface.cz',
+  'https://www.masteryourface.cz',
+  'http://localhost:8080',
+  'http://localhost:5173',
+];
+
+// HTML escape function to prevent XSS in emails
+function escapeHtml(text: string): string {
+  const htmlEscapes: Record<string, string> = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  };
+  return text.replace(/[&<>"']/g, (char) => htmlEscapes[char] || char);
+}
+
+// Basic rate limiting using in-memory store (resets on cold start)
+const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
+const RATE_LIMIT_MAX = 5; // max 5 requests per minute per IP
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const record = rateLimitStore.get(ip);
+  
+  if (!record || now > record.resetTime) {
+    rateLimitStore.set(ip, { count: 1, resetTime: now + RATE_LIMIT_WINDOW });
+    return false;
+  }
+  
+  if (record.count >= RATE_LIMIT_MAX) {
+    return true;
+  }
+  
+  record.count++;
+  return false;
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // CORS setup for Vercel
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  // CORS setup - restrict to allowed origins
+  const origin = req.headers.origin || '';
+  if (ALLOWED_ORIGINS.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
@@ -16,12 +61,35 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  // Rate limiting
+  const clientIp = (req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() || 
+                   req.socket?.remoteAddress || 
+                   'unknown';
+  
+  if (isRateLimited(clientIp)) {
+    return res.status(429).json({ error: 'Too many requests. Please try again later.' });
+  }
+
   try {
-    const { name, email, message } = req.body;
+    const { name, email, message, website } = req.body;
+
+    // Honeypot check - if 'website' field is filled, it's likely a bot
+    if (website) {
+      // Silently accept but don't send email (fool the bot)
+      return res.status(200).json({ 
+        success: true, 
+        message: 'Contact form submitted successfully' 
+      });
+    }
 
     // Validate required fields
     if (!name || !email || !message) {
       return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    // Input length validation
+    if (name.length > 100 || email.length > 100 || message.length > 5000) {
+      return res.status(400).json({ error: 'Input too long' });
     }
 
     // Validate email format
@@ -33,8 +101,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Get SMTP configuration from environment variables
     const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
     const smtpPort = parseInt(process.env.SMTP_PORT || '587');
-    const smtpUser = process.env.SMTP_USER; // Your email address
-    const smtpPass = process.env.SMTP_PASSWORD; // Your app password
+    const smtpUser = process.env.SMTP_USER;
+    const smtpPass = process.env.SMTP_PASSWORD;
     const recipientEmail = process.env.CONTACT_EMAIL || smtpUser || 'info@masteryourface.cz';
 
     if (!smtpUser || !smtpPass) {
@@ -42,30 +110,35 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(500).json({ error: 'Email service not configured' });
     }
 
+    // Escape user input for HTML email
+    const safeName = escapeHtml(name);
+    const safeEmail = escapeHtml(email);
+    const safeMessage = escapeHtml(message);
+
     // Create transporter
     const transporter = nodemailer.createTransport({
       host: smtpHost,
       port: smtpPort,
-      secure: smtpPort === 465, // true for 465, false for other ports
+      secure: smtpPort === 465,
       auth: {
         user: smtpUser,
         pass: smtpPass,
       },
     });
 
-    // Send email
+    // Send email with escaped content
     await transporter.sendMail({
       from: `"Master Your Face" <${smtpUser}>`,
       to: recipientEmail,
       replyTo: email,
-      subject: `Nový kontakt z webu Master Your Face - ${name}`,
+      subject: `Nový kontakt z webu Master Your Face - ${safeName}`,
       text: `Nový kontakt z webu\n\nJméno: ${name}\nEmail: ${email}\nZpráva:\n${message}`,
       html: `
         <h2>Nový kontakt z webu</h2>
-        <p><strong>Jméno:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Jméno:</strong> ${safeName}</p>
+        <p><strong>Email:</strong> ${safeEmail}</p>
         <p><strong>Zpráva:</strong></p>
-        <p>${message.replace(/\n/g, '<br>')}</p>
+        <p>${safeMessage.replace(/\n/g, '<br>')}</p>
       `,
     });
 

@@ -25,6 +25,7 @@ const Contact = ({ showHeading = true }: ContactProps) => {
     email: "",
     message: "",
   });
+  const [honeypot, setHoneypot] = useState(""); // Anti-spam honeypot field
   const [errors, setErrors] = useState<Partial<Record<keyof ContactFormData, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -52,7 +53,7 @@ const Contact = ({ showHeading = true }: ContactProps) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, website: honeypot }),
       });
 
       const data = await response.json();
@@ -148,6 +149,20 @@ const Contact = ({ showHeading = true }: ContactProps) => {
             </h3>
             
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Honeypot field - hidden from users, catches bots */}
+              <div className="absolute -left-[9999px]" aria-hidden="true">
+                <label htmlFor="website">Website</label>
+                <input
+                  type="text"
+                  id="website"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                />
+              </div>
+              
               <div>
                 <Label htmlFor="name">Jméno *</Label>
                 <Input

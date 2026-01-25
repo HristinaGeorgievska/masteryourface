@@ -8,10 +8,16 @@ import Footer from "@/components/Footer";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { BackToTop } from "@/components/BackToTop";
 import Contact from "@/components/Contact";
+import { SEO } from "@/components/SEO";
 
 const Index = () => {
   return (
     <main className="min-h-screen">
+      <SEO
+        title="Master Your Face | Profesionální make-up kurzy a portrétní fotografie"
+        description="Autorský beauty koncept Hristiny Georgievské. Individuální make-up kurzy, firemní beauty workshopy a profesionální portréty. 25+ let zkušeností."
+        path="/"
+      />
       {/* 1. Hero */}
       <HeroSlideshow />
       

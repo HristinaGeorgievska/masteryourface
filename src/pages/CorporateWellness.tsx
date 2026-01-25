@@ -4,11 +4,17 @@ import { BackToTop } from "@/components/BackToTop";
 import { Clock, MapPin, Package, Users, Sparkles, CheckCircle2, UsersRound, Palette, Sparkle, Target, Building2, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import serviceCorporate from "@/assets/service-corporate.jpg";
+import { SEO } from "@/components/SEO";
 
 export default function CorporateWellness() {
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Firemní beauty workshopy"
+        description="Make-up workshop pro firmy jako součást wellbeing programu. Praktický zážitek pro zaměstnankyně, který přidá sebevědomí a profesionální vzhled."
+        path="/business"
+      />
       {/* Back to Home Button */}
       <Link
         to="/"
@@ -23,7 +29,7 @@ export default function CorporateWellness() {
         <div className="container mx-auto max-w-6xl px-6 md:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">MASTER YOUR FACE — Business</h2>
+              <h1 className="text-3xl md:text-4xl font-bold mb-4">MASTER YOUR FACE — Business</h1>
               <p className="text-xl text-text-secondary mb-2">Beauty & Confidence for Business</p>
               <p className="text-lg text-text-secondary mb-8 leading-relaxed">
                 Firmy mohou tento workshop využít jako součást interních aktivit, wellbeing programů nebo jako stylový zážitek pro své zaměstnankyně či klientky. 
@@ -61,7 +67,7 @@ export default function CorporateWellness() {
             <div className="relative aspect-[3/4] rounded-lg overflow-hidden shadow-xl">
               <img
                 src={serviceCorporate}
-                alt="Corporate wellness session"
+                alt="Firemní beauty workshop Master Your Face Business"
                 className="w-full h-full object-cover"
               />
             </div>
