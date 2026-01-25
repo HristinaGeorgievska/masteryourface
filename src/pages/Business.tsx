@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import serviceCorporate from "@/assets/service-corporate.jpg";
 import { SEO } from "@/components/SEO";
 
-export default function CorporateWellness() {
+export default function Business() {
 
   return (
     <div className="min-h-screen">

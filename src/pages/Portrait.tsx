@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import servicePhotography from "@/assets/service-photography.jpg";
 import { SEO } from "@/components/SEO";
 
-export default function PortraitPhotography() {
+export default function Portrait() {
 
   return (
     <div className="min-h-screen">

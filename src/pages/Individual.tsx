@@ -6,7 +6,7 @@ import servicePublic from "@/assets/service-public.jpg";
 import { useCourses } from "@/hooks/useCourses";
 import { SEO } from "@/components/SEO";
 
-export default function PublicCourses() {
+export default function Individual() {
   const { data: courses, isLoading, error } = useCourses();
 
   return (

@@ -9,9 +9,9 @@ import { Suspense, lazy, useEffect } from "react";
 
 const Index = lazy(() => import("./pages/Index"));
 const NotFound = lazy(() => import("./pages/NotFound"));
-const PublicCourses = lazy(() => import("./pages/PublicCourses"));
-const CorporateWellness = lazy(() => import("./pages/CorporateWellness"));
-const PortraitPhotography = lazy(() => import("./pages/PortraitPhotography"));
+const Individual = lazy(() => import("./pages/Individual"));
+const Business = lazy(() => import("./pages/Business"));
+const Portrait = lazy(() => import("./pages/Portrait"));
 
 const queryClient = new QueryClient();
 
@@ -39,9 +39,9 @@ const App = () => (
             <PrerenderReady />
             <Routes>
               <Route path="/" element={<Index />} />
-              <Route path="/individual" element={<PublicCourses />} />
-              <Route path="/business" element={<CorporateWellness />} />
-              <Route path="/portrait" element={<PortraitPhotography />} />
+              <Route path="/individual" element={<Individual />} />
+              <Route path="/business" element={<Business />} />
+              <Route path="/portrait" element={<Portrait />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
