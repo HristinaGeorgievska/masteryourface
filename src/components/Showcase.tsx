@@ -13,7 +13,6 @@ export const Showcase = () => {
   const { data: items, isLoading, error } = useShowcase();
 
   if (error) {
-    console.error("Failed to load showcase items:", error);
     return null;
   }
 

@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { contentfulClient, ShowcaseEntry } from "../lib/contentful";
+import { sanitizeCdnImageUrl } from "../lib/utils";
 
 export interface ShowcaseItem {
   id: string;
@@ -19,14 +20,15 @@ const fetchShowcase = async (): Promise<ShowcaseItem[]> => {
   return response.items.map((item) => {
     const fields = item.fields;
     
-    // Extract image URL safely
+    // Extract image URL safely and validate CDN origin
     let imageUrl = "";
     if (fields.image && fields.image.fields && fields.image.fields.file) {
-      imageUrl = fields.image.fields.file.url as string;
+      let rawUrl = fields.image.fields.file.url as string;
       // Contentful URLs sometimes miss the protocol
-      if (imageUrl.startsWith("//")) {
-        imageUrl = `https:${imageUrl}`;
+      if (rawUrl.startsWith("//")) {
+        rawUrl = `https:${rawUrl}`;
       }
+      imageUrl = sanitizeCdnImageUrl(rawUrl);
     }
 
     return {

@@ -21,25 +21,48 @@ function escapeHtml(text: string): string {
   return text.replace(/[&<>"']/g, (char) => htmlEscapes[char] || char);
 }
 
-// Basic rate limiting using in-memory store (resets on cold start)
-const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
-const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
-const RATE_LIMIT_MAX = 5; // max 5 requests per minute per IP
+// Strip control characters to prevent header injection
+function sanitizeInput(text: string): string {
+  return text.replace(/[\r\n\t\0]/g, ' ').trim();
+}
+
+// Sliding-window rate limiting — in-memory store (resets on cold start)
+const rateLimitStore = new Map<string, number[]>();
+const RATE_LIMIT_WINDOW = 60 * 60 * 1000; // 1 hour
+const RATE_LIMIT_MAX = 100; // max 100 requests per hour per IP
+const CLEANUP_INTERVAL = 10 * 60 * 1000; // purge stale entries every 10 min
+
+let lastCleanup = Date.now();
+
+/** Remove timestamps older than the window and drop empty IPs. */
+function pruneStore(now: number): void {
+  if (now - lastCleanup < CLEANUP_INTERVAL) return;
+  lastCleanup = now;
+  for (const [ip, timestamps] of rateLimitStore) {
+    const valid = timestamps.filter((t) => now - t < RATE_LIMIT_WINDOW);
+    if (valid.length === 0) {
+      rateLimitStore.delete(ip);
+    } else {
+      rateLimitStore.set(ip, valid);
+    }
+  }
+}
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
-  const record = rateLimitStore.get(ip);
-  
-  if (!record || now > record.resetTime) {
-    rateLimitStore.set(ip, { count: 1, resetTime: now + RATE_LIMIT_WINDOW });
-    return false;
-  }
-  
-  if (record.count >= RATE_LIMIT_MAX) {
+  pruneStore(now);
+
+  const timestamps = rateLimitStore.get(ip) ?? [];
+  // Keep only hits within the current window
+  const recent = timestamps.filter((t) => now - t < RATE_LIMIT_WINDOW);
+
+  if (recent.length >= RATE_LIMIT_MAX) {
+    rateLimitStore.set(ip, recent);
     return true;
   }
-  
-  record.count++;
+
+  recent.push(now);
+  rateLimitStore.set(ip, recent);
   return false;
 }
 
@@ -61,8 +84,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // Rate limiting
-  const clientIp = (req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() || 
+  // CSRF protection — reject cross-site requests (browsers send Sec-Fetch-Site)
+  const fetchSite = req.headers['sec-fetch-site'] as string | undefined;
+  if (fetchSite && fetchSite !== 'same-origin') {
+    return res.status(403).json({ error: 'Forbidden' });
+  }
+
+  // Rate limiting — use x-real-ip (trusted on Vercel) instead of spoofable x-forwarded-for
+  const clientIp = (req.headers['x-real-ip'] as string) ||
+                   (req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() || 
                    req.socket?.remoteAddress || 
                    'unknown';
   
@@ -110,10 +140,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(500).json({ error: 'Email service not configured' });
     }
 
-    // Escape user input for HTML email
-    const safeName = escapeHtml(name);
-    const safeEmail = escapeHtml(email);
-    const safeMessage = escapeHtml(message);
+    // Strip control characters and escape user input for HTML email
+    const cleanName = sanitizeInput(name);
+    const cleanEmail = sanitizeInput(email);
+    const cleanMessage = sanitizeInput(message);
+
+    const safeName = escapeHtml(cleanName);
+    const safeEmail = escapeHtml(cleanEmail);
+    const safeMessage = escapeHtml(cleanMessage);
 
     // Create transporter
     const transporter = nodemailer.createTransport({
@@ -130,9 +164,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     await transporter.sendMail({
       from: `"Master Your Face" <${smtpUser}>`,
       to: recipientEmail,
-      replyTo: email,
+      replyTo: cleanEmail,
       subject: `Nový kontakt z webu Master Your Face - ${safeName}`,
-      text: `Nový kontakt z webu\n\nJméno: ${name}\nEmail: ${email}\nZpráva:\n${message}`,
+      text: `Nový kontakt z webu\n\nJméno: ${cleanName}\nEmail: ${cleanEmail}\nZpráva:\n${cleanMessage}`,
       html: `
         <h2>Nový kontakt z webu</h2>
         <p><strong>Jméno:</strong> ${safeName}</p>

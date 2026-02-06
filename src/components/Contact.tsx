@@ -65,7 +65,6 @@ const Contact = ({ showHeading = true }: ContactProps) => {
       toast.success("Děkujeme, ozveme se vám co nejdříve.");
       setFormData({ name: "", email: "", message: "" });
     } catch (error) {
-      console.error('Contact form error:', error);
       toast.error(
         error instanceof Error 
           ? error.message 
