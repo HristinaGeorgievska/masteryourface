@@ -3,6 +3,7 @@ import { format, parseISO } from 'date-fns';
 import { cs } from 'date-fns/locale';
 import { getContentfulClient } from './_lib/contentful';
 import { enforceCors } from './_lib/cors';
+import { stripHtml } from './_lib/sanitize';
 
 /** Allowed hostnames for Contentful CDN image assets. */
 const CONTENTFUL_CDN_HOSTS = ['images.ctfassets.net', 'downloads.ctfassets.net'];
@@ -83,8 +84,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
       return {
         id: item.sys.id,
-        city: fields.city,
-        address: fields.adress,
+        city: stripHtml(fields.city),
+        address: stripHtml(fields.adress),
         date: formattedDate,
         timeRange: `${startTime} - ${endTime}`,
         status: fields.status,

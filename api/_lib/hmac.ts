@@ -9,16 +9,26 @@ function getSecret(): string {
   return secret;
 }
 
-/** Create an HMAC-SHA256 signature for a given timestamp. */
-export function signTimestamp(ts: number): string {
-  return createHmac('sha256', getSecret()).update(String(ts)).digest('hex');
+/**
+ * Create an HMAC-SHA256 signature bound to a timestamp AND the client IP.
+ * Binding to IP prevents tokens harvested from one machine being replayed
+ * from another (mitigates Origin-spoofing attacks from automated tools).
+ */
+export function signToken(ts: number, ip: string): string {
+  return createHmac('sha256', getSecret())
+    .update(`${ts}:${ip}`)
+    .digest('hex');
 }
 
 /**
- * Verify the HMAC token and enforce timing constraints.
+ * Verify the HMAC token, enforce timing constraints, and confirm IP match.
  * Returns `null` on success or an error string on failure.
  */
-export function verifyToken(ts: unknown, token: unknown): string | null {
+export function verifyToken(
+  ts: unknown,
+  token: unknown,
+  ip: string,
+): string | null {
   if (typeof ts !== 'number' || typeof token !== 'string') {
     return 'Invalid token format';
   }
@@ -35,7 +45,7 @@ export function verifyToken(ts: unknown, token: unknown): string | null {
   }
 
   try {
-    const expected = signTimestamp(ts);
+    const expected = signToken(ts, ip);
     const a = Buffer.from(expected, 'hex');
     const b = Buffer.from(token, 'hex');
     if (a.length !== b.length || !timingSafeEqual(a, b)) {

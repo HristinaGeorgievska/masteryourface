@@ -1,16 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import nodemailer from 'nodemailer';
 import { verifyToken } from './_lib/hmac';
-
-// Localhost origins are only allowed in non-production environments
-const isProduction = process.env.VERCEL_ENV === 'production';
-const ALLOWED_ORIGINS = [
-  'https://masteryourface.cz',
-  'https://www.masteryourface.cz',
-  ...(!isProduction
-    ? ['http://localhost:8080', 'http://localhost:5173']
-    : []),
-];
+import { ALLOWED_ORIGINS } from './_lib/origins';
+import { createRateLimiter } from './_lib/ratelimit';
 
 // HTML escape function to prevent XSS in emails
 function escapeHtml(text: string): string {
@@ -34,47 +26,11 @@ function sanitizeBodyInput(text: string): string {
   return text.replace(/[\r\t\0]/g, ' ').trim();
 }
 
-// Sliding-window rate limiting — in-memory store (resets on cold start).
-// TODO: Replace with Upstash Redis (@upstash/ratelimit) for production-grade
-// rate limiting that persists across serverless cold starts and instances.
-const rateLimitStore = new Map<string, number[]>();
-const RATE_LIMIT_WINDOW = 60 * 60 * 1000; // 1 hour
-const RATE_LIMIT_MAX = 10; // max 10 requests per hour per IP
-const CLEANUP_INTERVAL = 10 * 60 * 1000; // purge stale entries every 10 min
-
-let lastCleanup = Date.now();
-
-/** Remove timestamps older than the window and drop empty IPs. */
-function pruneStore(now: number): void {
-  if (now - lastCleanup < CLEANUP_INTERVAL) return;
-  lastCleanup = now;
-  for (const [ip, timestamps] of rateLimitStore) {
-    const valid = timestamps.filter((t) => now - t < RATE_LIMIT_WINDOW);
-    if (valid.length === 0) {
-      rateLimitStore.delete(ip);
-    } else {
-      rateLimitStore.set(ip, valid);
-    }
-  }
-}
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  pruneStore(now);
-
-  const timestamps = rateLimitStore.get(ip) ?? [];
-  // Keep only hits within the current window
-  const recent = timestamps.filter((t) => now - t < RATE_LIMIT_WINDOW);
-
-  if (recent.length >= RATE_LIMIT_MAX) {
-    rateLimitStore.set(ip, recent);
-    return true;
-  }
-
-  recent.push(now);
-  rateLimitStore.set(ip, recent);
-  return false;
-}
+// 10 submissions/hour/IP — unchanged from original limit
+const contactRateLimiter = createRateLimiter({
+  windowMs: 60 * 60 * 1000,
+  max: 10,
+});
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // CORS setup - restrict to allowed origins
@@ -104,7 +60,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Rate limiting — trust only x-real-ip (set by Vercel's edge, not spoofable)
   const clientIp = (req.headers['x-real-ip'] as string) || 'unknown';
 
-  if (isRateLimited(clientIp)) {
+  if (contactRateLimiter.isLimited(clientIp)) {
     return res
       .status(429)
       .json({ error: 'Too many requests. Please try again later.' });
@@ -121,7 +77,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // HMAC timestamp token verification — prevents automated submissions
     // that bypass the frontend (scripts must fetch a token, then wait ≥ 3 s).
-    const tokenError = verifyToken(_ts, _token);
+    const tokenError = verifyToken(_ts, _token, clientIp);
     if (tokenError) {
       return res.status(403).json({ error: tokenError });
     }

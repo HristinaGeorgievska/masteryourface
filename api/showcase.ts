@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { getContentfulClient } from './_lib/contentful';
 import { enforceCors } from './_lib/cors';
+import { stripHtml } from './_lib/sanitize';
 
 /** Allowed hostnames for Contentful CDN image assets. */
 const CONTENTFUL_CDN_HOSTS = ['images.ctfassets.net', 'downloads.ctfassets.net'];
@@ -55,9 +56,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
       return {
         id: item.sys.id,
-        name: fields.name,
-        client: fields.client,
-        photographer: fields.photographer,
+        name: stripHtml(fields.name),
+        client: stripHtml(fields.client),
+        photographer: stripHtml(fields.photographer),
         image: imageUrl,
         order: fields.order,
       };
