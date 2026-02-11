@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -6,6 +6,11 @@ import { Label } from "@/components/ui/label";
 import { Mail, Phone, Instagram } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
+
+interface FormToken {
+  ts: number;
+  token: string;
+}
 
 const contactSchema = z.object({
   name: z.string().min(2, "Jméno musí mít alespoň 2 znaky"),
@@ -28,6 +33,23 @@ const Contact = ({ showHeading = true }: ContactProps) => {
   const [honeypot, setHoneypot] = useState(""); // Anti-spam honeypot field
   const [errors, setErrors] = useState<Partial<Record<keyof ContactFormData, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const formToken = useRef<FormToken | null>(null);
+
+  // Fetch HMAC token when form mounts — backend will verify timestamp + signature
+  useEffect(() => {
+    const fetchToken = async () => {
+      try {
+        const res = await fetch('/api/token');
+        if (res.ok) {
+          formToken.current = await res.json();
+        }
+      } catch {
+        // Token fetch failed — submission will be rejected by the backend.
+        // Silent fail; user won't notice until they try to submit.
+      }
+    };
+    fetchToken();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,7 +75,12 @@ const Contact = ({ showHeading = true }: ContactProps) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...formData, website: honeypot }),
+        body: JSON.stringify({
+          ...formData,
+          website: honeypot,
+          _ts: formToken.current?.ts,
+          _token: formToken.current?.token,
+        }),
       });
 
       const data = await response.json();
@@ -64,6 +91,12 @@ const Contact = ({ showHeading = true }: ContactProps) => {
 
       toast.success("Děkujeme, ozveme se vám co nejdříve.");
       setFormData({ name: "", email: "", message: "" });
+
+      // Refresh token for potential re-submission
+      fetch('/api/token')
+        .then((r) => r.ok ? r.json() : null)
+        .then((t) => { if (t) formToken.current = t; })
+        .catch(() => {});
     } catch (error) {
       toast.error(
         error instanceof Error 

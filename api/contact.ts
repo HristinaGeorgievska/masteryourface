@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import nodemailer from 'nodemailer';
+import { verifyToken } from './_lib/hmac';
 
 // Localhost origins are only allowed in non-production environments
 const isProduction = process.env.VERCEL_ENV === 'production';
@@ -114,7 +115,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(413).json({ error: 'Payload too large' });
     }
 
-    const { name, email, message, website } = req.body;
+    const { name, email, message, website, _ts, _token } = req.body;
+
+    // HMAC timestamp token verification — prevents automated submissions
+    // that bypass the frontend (scripts must fetch a token, then wait ≥ 3 s).
+    const tokenError = verifyToken(_ts, _token);
+    if (tokenError) {
+      return res.status(403).json({ error: tokenError });
+    }
 
     // Honeypot check - if 'website' field is filled, it's likely a bot
     if (website) {
