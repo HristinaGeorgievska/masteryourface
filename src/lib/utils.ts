@@ -12,7 +12,7 @@ export function cn(...inputs: ClassValue[]) {
 export function isSafeUrl(url: string): boolean {
   try {
     const parsed = new URL(url);
-    return ["https:", "http:"].includes(parsed.protocol);
+    return parsed.protocol === "https:";
   } catch {
     return false;
   }
@@ -29,7 +29,7 @@ export function sanitizeCdnImageUrl(url: string): string {
   try {
     const parsed = new URL(url);
     if (
-      ["https:", "http:"].includes(parsed.protocol) &&
+      parsed.protocol === "https:" &&
       CONTENTFUL_CDN_HOSTS.some((host) => parsed.hostname === host)
     ) {
       return url;

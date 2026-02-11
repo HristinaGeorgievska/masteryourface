@@ -24,9 +24,14 @@ function escapeHtml(text: string): string {
   return text.replace(/[&<>"']/g, (char) => htmlEscapes[char] || char);
 }
 
-// Strip control characters to prevent header injection
-function sanitizeInput(text: string): string {
+// Strip all control characters — used for name/email to prevent header injection
+function sanitizeHeaderInput(text: string): string {
   return text.replace(/[\r\n\t\0]/g, ' ').trim();
+}
+
+// Preserve newlines in message body, strip other control characters
+function sanitizeBodyInput(text: string): string {
+  return text.replace(/[\r\t\0]/g, ' ').trim();
 }
 
 // Sliding-window rate limiting — in-memory store (resets on cold start).
@@ -173,9 +178,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     // Strip control characters and escape user input for HTML email
-    const cleanName = sanitizeInput(name);
-    const cleanEmail = sanitizeInput(email);
-    const cleanMessage = sanitizeInput(message);
+    const cleanName = sanitizeHeaderInput(name);
+    const cleanEmail = sanitizeHeaderInput(email);
+    const cleanMessage = sanitizeBodyInput(message);
 
     const safeName = escapeHtml(cleanName);
     const safeEmail = escapeHtml(cleanEmail);

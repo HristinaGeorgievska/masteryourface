@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { createClient } from 'contentful';
+import { getContentfulClient } from './_lib/contentful';
+import { enforceCors } from './_lib/cors';
 
 /** Allowed hostnames for Contentful CDN image assets. */
 const CONTENTFUL_CDN_HOSTS = ['images.ctfassets.net', 'downloads.ctfassets.net'];
@@ -8,7 +9,7 @@ function sanitizeCdnImageUrl(url: string): string {
   try {
     const parsed = new URL(url);
     if (
-      ['https:', 'http:'].includes(parsed.protocol) &&
+      parsed.protocol === 'https:' &&
       CONTENTFUL_CDN_HOSTS.some((host) => parsed.hostname === host)
     ) {
       return url;
@@ -32,16 +33,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const spaceId = process.env.CONTENTFUL_SPACE_ID;
-  const accessToken = process.env.CONTENTFUL_ACCESS_TOKEN;
-
-  if (!spaceId || !accessToken) {
-    console.error('Contentful credentials not configured');
-    return res.status(500).json({ error: 'CMS not configured' });
-  }
+  if (!enforceCors(req, res)) return;
 
   try {
-    const client = createClient({ space: spaceId, accessToken });
+    const client = getContentfulClient();
 
     const response = await client.getEntries({
       content_type: 'showcaseItem',
