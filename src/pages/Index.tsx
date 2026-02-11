@@ -43,7 +43,6 @@ const Index = () => {
       <ScrollReveal>
         <FAQ />
       </ScrollReveal>
- 126412
       {/* 7. Contact */}
       <ScrollReveal>
         <Contact />

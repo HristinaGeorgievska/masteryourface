@@ -81,6 +81,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const origin = req.headers.origin || '';
   if (ALLOWED_ORIGINS.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
   }
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -100,12 +101,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(403).json({ error: 'Forbidden' });
   }
 
-  // Rate limiting — use x-real-ip (trusted on Vercel) instead of spoofable x-forwarded-for
-  const clientIp =
-    (req.headers['x-real-ip'] as string) ||
-    (req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() ||
-    req.socket?.remoteAddress ||
-    'unknown';
+  // Rate limiting — trust only x-real-ip (set by Vercel's edge, not spoofable)
+  const clientIp = (req.headers['x-real-ip'] as string) || 'unknown';
 
   if (isRateLimited(clientIp)) {
     return res
