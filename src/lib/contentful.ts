@@ -1,27 +1,10 @@
-import { createClient, Entry, Asset } from "contentful";
-
-export const contentfulClient = createClient({
-  space: import.meta.env.VITE_CONTENTFUL_SPACE_ID,
-  accessToken: import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN,
-});
-
-export interface CourseFields {
-  city: string;
-  adress: string;
-  date: string; // ISO 8601 date string
-  status: boolean;
-  bookingUrl: string;
-  hero?: Asset; // Made optional just in case existing entries don't have it yet, though typically it's expected
-}
-
-export type CourseEntry = Entry<CourseFields>;
-
-export interface ShowcaseItemFields {
-  name?: string;
-  client?: string;
-  photographer?: string;
-  image: Asset;
-  order?: number;
-}
-
-export type ShowcaseEntry = Entry<ShowcaseItemFields>;
+// Contentful client has been moved to server-side API routes (see api/ directory).
+// This prevents API tokens from being exposed in the client-side JavaScript bundle.
+//
+// Server-side env vars (set in Vercel dashboard, NOT prefixed with VITE_):
+//   CONTENTFUL_SPACE_ID
+//   CONTENTFUL_ACCESS_TOKEN
+//
+// API endpoints:
+//   GET /api/courses   — returns formatted course data
+//   GET /api/showcase  — returns showcase gallery items

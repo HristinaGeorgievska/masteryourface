@@ -1,8 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { contentfulClient, CourseEntry } from "../lib/contentful";
-import { format, parseISO } from "date-fns";
-import { cs } from "date-fns/locale";
-import { isSafeUrl, sanitizeCdnImageUrl } from "../lib/utils";
 
 export interface FormattedCourse {
   id: string;
@@ -16,49 +12,11 @@ export interface FormattedCourse {
 }
 
 const fetchCourses = async (): Promise<FormattedCourse[]> => {
-  const response = await contentfulClient.getEntries<CourseEntry>({
-    content_type: "course",
-    order: "fields.date", // Sort by date ascending
-  });
-
-  return response.items.map((item) => {
-    const fields = item.fields;
-    const dateObj = fields.date ? parseISO(fields.date) : new Date();
-    
-    // Format date: "15. Března 2024"
-    const formattedDate = format(dateObj, "d. MMMM yyyy", { locale: cs });
-    
-    // Format time: "10:00" (assuming duration is fixed or handled elsewhere, or just showing start time)
-    // The plan mentioned "Includes both date and start time". 
-    // If we want a range like "10:00 - 15:00", we might need to infer duration or have it in the date.
-    // For now I will extract the start time from the date.
-    const startTime = format(dateObj, "HH:mm");
-    const endTime = format(new Date(dateObj.getTime() + 5 * 60 * 60 * 1000), "HH:mm"); // Assuming 5 hours as per original UI "cca 5 hodin"
-
-    let heroImageUrl: string | undefined = undefined;
-    if (fields.hero && fields.hero.fields && fields.hero.fields.file && fields.hero.fields.file.url) {
-      let rawUrl = fields.hero.fields.file.url;
-      // Ensure protocol is present (Contentful often returns //domain.com)
-      if (rawUrl.startsWith("//")) {
-        rawUrl = `https:${rawUrl}`;
-      }
-      heroImageUrl = sanitizeCdnImageUrl(rawUrl) || undefined;
-    }
-
-    // Validate bookingUrl — only allow safe http(s) URLs
-    const safeBookingUrl = isSafeUrl(fields.bookingUrl) ? fields.bookingUrl : "#";
-
-    return {
-      id: item.sys.id,
-      city: fields.city,
-      address: fields.adress,
-      date: formattedDate,
-      timeRange: `${startTime} - ${endTime}`,
-      status: fields.status,
-      bookingUrl: safeBookingUrl,
-      heroImage: heroImageUrl,
-    };
-  });
+  const response = await fetch("/api/courses");
+  if (!response.ok) {
+    throw new Error("Failed to fetch courses");
+  }
+  return response.json();
 };
 
 export const useCourses = () => {

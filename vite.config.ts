@@ -18,7 +18,7 @@ const ROUTES_TO_PRERENDER = [
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   server: {
-    host: "::",
+    host: "localhost",
     port: 8080,
   },
   plugins: [
