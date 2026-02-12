@@ -30,7 +30,7 @@ export default defineConfig(({ mode }) => ({
       dynamicRoutes: ROUTES_TO_PRERENDER
     }),
     mode === "development" && componentTagger(),
-    mode === "production" && prerender({
+    mode === "production" && !process.env.VERCEL && prerender({
       routes: ROUTES_TO_PRERENDER,
       renderer: puppeteerRenderer,
       rendererOptions: {
