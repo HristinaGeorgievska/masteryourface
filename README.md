@@ -4,7 +4,7 @@ Webové stránky pro [masteryourface.cz](https://masteryourface.cz) — make-up 
 
 ---
 
-## Pro klienta
+## Pro klientku
 
 ### Co tento web umí
 
