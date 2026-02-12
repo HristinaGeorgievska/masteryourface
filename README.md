@@ -1,31 +1,134 @@
-**Use your preferred IDE**
+# Master Your Face
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+Webové stránky pro [masteryourface.cz](https://masteryourface.cz) — make-up workshopy, firemní eventy a portrétní focení.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+---
 
-Follow these steps:
+## Pro klienta
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Co tento web umí
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+- **Nabídka služeb** — přehled workshopů (individuální, firemní) a portrétního focení
+- **Kurzy** — aktuální termíny se načítají z redakčního systému Contentful, stačí je tam přidat/upravit a na webu se automaticky objeví
+- **Kontaktní formulář** — odesílá zprávy přímo na e-mail, chráněný proti spamu
+- **Galerie / Showcase** — obrázky spravované přes Contentful
 
-# Step 3: Install the necessary dependencies.
-npm i
+### Jak upravit obsah
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+Většinu obsahu (kurzy, galerii, showcase) lze měnit přímo v **Contentful** bez zásahu do kódu. Po uložení změn v Contentful se nový obsah na webu objeví do několika minut.
+
+Pro změny textů na stránkách (nadpisy, popisy služeb, FAQ) je potřeba upravit kód — kontaktujte vývojáře.
+
+### Kde web běží
+
+Web je nasazený na **Vercel** a připojený ke Git repozitáři. Každá změna v kódu se automaticky nasadí do produkce.
+
+---
+
+## Pro vývojáře
+
+### Tech stack
+
+| Vrstva | Technologie |
+|---|---|
+| Frontend | React 19, TypeScript (strict), Vite 7, Tailwind CSS 4 |
+| Komponenty | shadcn/ui (Radix UI primitives) |
+| Data fetching | TanStack React Query |
+| CMS | Contentful (Delivery API) |
+| Backend | Vercel Serverless Functions (Node.js) |
+| E-mail | Nodemailer (SMTP) |
+| Hosting | Vercel |
+| CI | GitHub Actions (lint, typecheck, build) |
+
+### Struktura projektu
+
+```
+├── api/                    # Vercel serverless funkce
+│   ├── _lib/               # Sdílené utility (CORS, HMAC, rate limit, sanitizace)
+│   ├── contact.ts          # POST — kontaktní formulář
+│   ├── courses.ts          # GET  — kurzy z Contentful
+│   ├── showcase.ts         # GET  — galerie z Contentful
+│   └── token.ts            # GET  — HMAC token pro formulář
+├── src/
+│   ├── components/         # React komponenty
+│   │   └── ui/             # shadcn/ui primitives
+│   ├── hooks/              # Custom hooks (useCourses, useShowcase, …)
+│   ├── pages/              # Route komponenty (lazy-loaded)
+│   └── App.tsx             # Router, providers, ErrorBoundary
+├── .github/workflows/      # CI pipeline
+├── vercel.json             # Security headers, rewrites
+└── package.json
 ```
 
-## What technologies are used for this project?
+### Lokální vývoj
 
-This project is built with:
+Požadavky: Node.js 20+ a npm.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```sh
+git clone <REPO_URL>
+cd masteryourface
+npm ci
+```
+
+Pro lokální vývoj včetně API routes je potřeba Vercel CLI:
+
+```sh
+npx vercel dev
+```
+
+Zkopírujte `.env.example` → `.env` a vyplňte potřebné hodnoty (Contentful, SMTP, HMAC secret).
+
+### Skripty
+
+| Příkaz | Popis |
+|---|---|
+| `npm run dev` | Vite dev server (pouze frontend) |
+| `npx vercel dev` | Dev server s API routes |
+| `npm run build` | Produkční build + prerendering |
+| `npm run lint` | ESLint |
+| `npm run type-check` | `tsc --noEmit` |
+| `npm run preview` | Preview produkčního buildu |
+
+### Environment variables
+
+Všechny proměnné jsou server-side only (žádný `VITE_` prefix). Nastavují se ve Vercel dashboardu.
+
+| Proměnná | Účel |
+|---|---|
+| `CONTENTFUL_SPACE_ID` | Contentful Space ID |
+| `CONTENTFUL_ACCESS_TOKEN` | Contentful Delivery API token |
+| `SMTP_HOST` | SMTP server (default: `smtp.gmail.com`) |
+| `SMTP_PORT` | SMTP port (default: `587`) |
+| `SMTP_USER` | SMTP přihlašovací e-mail |
+| `SMTP_PASSWORD` | SMTP heslo / app password |
+| `CONTACT_EMAIL` | Kam se posílají zprávy z formuláře |
+| `FORM_TOKEN_SECRET` | HMAC secret (min. 32 random bajtů) |
+
+Generování HMAC secretu:
+
+```sh
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+
+### Bezpečnost
+
+- **Security headers** — CSP, HSTS (preload), X-Frame-Options DENY, Permissions-Policy
+- **CSRF ochrana** — HMAC-SHA256 tokeny vázané na IP + timestamp, timing-safe porovnání
+- **Sanitizace vstupů** — type guards, délkové limity, regex validace, HTML escaping, ochrana proti header injection
+- **Rate limiting** — in-memory sliding window (kontakt: 10/h/IP, token: 20/h/IP)
+- **Honeypot** — skryté pole ve formuláři
+- **URL allowlisting** — Contentful CDN a booking domény
+
+### CI/CD
+
+GitHub Actions workflow (`.github/workflows/ci.yml`) běží na každém push/PR do `main`:
+
+1. `npm run type-check`
+2. `npm run lint`
+3. `npm run build`
+
+Deployment zajišťuje Vercel Git integration automaticky.
+
+### Package manager
+
+Projekt používá **npm**. Nepoužívejte Bun, Yarn ani pnpm — lockfile je `package-lock.json`.
