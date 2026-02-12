@@ -17,7 +17,7 @@ export function isAllowedOrigin(origin: string): boolean {
     const hostname = url.hostname;
 
     // Allow production domains
-    if (ALLOWED_HOSTS.includes(hostname as any)) return true;
+    if ((ALLOWED_HOSTS as readonly string[]).includes(hostname)) return true;
 
     // Allow localhost in development
     if (!isProduction && (hostname === 'localhost' || hostname === '127.0.0.1')) return true;

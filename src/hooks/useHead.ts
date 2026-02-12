@@ -12,6 +12,7 @@ interface HeadTag {
  * Works with prerenderers that execute JS before snapshotting.
  */
 export function useHead(tags: HeadTag[]) {
+  const tagsKey = JSON.stringify(tags);
   useEffect(() => {
     const elements: Element[] = [];
 
@@ -45,5 +46,6 @@ export function useHead(tags: HeadTag[]) {
         el.remove();
       }
     };
-  }, [JSON.stringify(tags)]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tagsKey]);
 }
