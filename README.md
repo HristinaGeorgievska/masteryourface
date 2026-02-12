@@ -34,8 +34,8 @@ Web je nasazený na **Vercel** a připojený ke Git repozitáři. Každá změna
 | Frontend | React 19, TypeScript (strict), Vite 7, Tailwind CSS 4 |
 | Komponenty | shadcn/ui (Radix UI primitives) |
 | Data fetching | TanStack React Query |
-| CMS | Contentful (Delivery API) |
-| Backend | Vercel Serverless Functions (Node.js) |
+| CMS | Contentful (Delivery API, client-side SDK) |
+| Backend | Vercel Serverless Functions (kontaktní formulář) |
 | E-mail | Nodemailer (SMTP) |
 | Hosting | Vercel |
 | CI | GitHub Actions (lint, typecheck, build) |
@@ -43,16 +43,15 @@ Web je nasazený na **Vercel** a připojený ke Git repozitáři. Každá změna
 ### Struktura projektu
 
 ```
-├── api/                    # Vercel serverless funkce
-│   ├── _lib/               # Sdílené utility (CORS, HMAC, rate limit, sanitizace)
+├── api/                    # Vercel serverless funkce (pouze kontaktní formulář)
+│   ├── _lib/               # Sdílené utility (HMAC, origins, rate limit)
 │   ├── contact.ts          # POST — kontaktní formulář
-│   ├── courses.ts          # GET  — kurzy z Contentful
-│   ├── showcase.ts         # GET  — galerie z Contentful
 │   └── token.ts            # GET  — HMAC token pro formulář
 ├── src/
 │   ├── components/         # React komponenty
 │   │   └── ui/             # shadcn/ui primitives
 │   ├── hooks/              # Custom hooks (useCourses, useShowcase, …)
+│   ├── lib/                # Contentful SDK klient
 │   ├── pages/              # Route komponenty (lazy-loaded)
 │   └── App.tsx             # Router, providers, ErrorBoundary
 ├── .github/workflows/      # CI pipeline
@@ -70,13 +69,15 @@ cd masteryourface
 npm ci
 ```
 
-Pro lokální vývoj včetně API routes je potřeba Vercel CLI:
+Zkopírujte `.env.example` → `.env` a vyplňte potřebné hodnoty (Contentful, SMTP, HMAC secret).
+
+Pro lokální vývoj s kontaktním formulářem (API routes) je potřeba Vercel CLI:
 
 ```sh
 npx vercel dev
 ```
 
-Zkopírujte `.env.example` → `.env` a vyplňte potřebné hodnoty (Contentful, SMTP, HMAC secret).
+Kurzy a showcase se načítají přímo z Contentful (client-side SDK), takže pro ně stačí `npm run dev`.
 
 ### Skripty
 
@@ -91,12 +92,16 @@ Zkopírujte `.env.example` → `.env` a vyplňte potřebné hodnoty (Contentful,
 
 ### Environment variables
 
-Všechny proměnné jsou server-side only (žádný `VITE_` prefix). Nastavují se ve Vercel dashboardu.
+Nastavují se ve Vercel dashboardu a lokálně v `.env`.
+
+**Client-side** (exposed via `envPrefix` in `vite.config.ts`):
 
 | Proměnná | Účel |
 |---|---|
 | `CONTENTFUL_SPACE_ID` | Contentful Space ID |
-| `CONTENTFUL_ACCESS_TOKEN` | Contentful Delivery API token |
+| `CONTENTFUL_ACCESS_TOKEN` | Contentful Delivery API token (read-only, public content) |
+
+**Server-side only** (used by API routes):
 | `SMTP_HOST` | SMTP server (default: `smtp.gmail.com`) |
 | `SMTP_PORT` | SMTP port (default: `587`) |
 | `SMTP_USER` | SMTP přihlašovací e-mail |

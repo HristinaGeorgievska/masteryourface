@@ -17,6 +17,8 @@ const ROUTES_TO_PRERENDER = [
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  // Expose CONTENTFUL_ env vars to the client bundle (in addition to default VITE_)
+  envPrefix: ['VITE_', 'CONTENTFUL_'],
   server: {
     host: "localhost",
     port: 8080,
