@@ -28,3 +28,8 @@ PPR.md
 PPR_EH.md
 CALL_PREP.md
 GOOGLE_WORKSPACE_SETUP.md
+
+# Contentful
+contentful-export-*
+contentful-import-*
+images.ctfassets.net/

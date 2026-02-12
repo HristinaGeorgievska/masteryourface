@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { getContentfulClient } from './_lib/contentful';
-import { enforceCors } from './_lib/cors';
-import { stripHtml } from './_lib/sanitize';
+import { getContentfulClient } from './_lib/contentful.js';
+import { enforceCors } from './_lib/cors.js';
+import { stripHtml } from './_lib/sanitize.js';
 
 /** Allowed hostnames for Contentful CDN image assets. */
 const CONTENTFUL_CDN_HOSTS = ['images.ctfassets.net', 'downloads.ctfassets.net'];

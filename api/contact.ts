@@ -1,8 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import nodemailer from 'nodemailer';
-import { verifyToken } from './_lib/hmac';
-import { ALLOWED_ORIGINS } from './_lib/origins';
-import { createRateLimiter } from './_lib/ratelimit';
+import { verifyToken } from './_lib/hmac.js';
+import { ALLOWED_ORIGINS } from './_lib/origins.js';
+import { createRateLimiter } from './_lib/ratelimit.js';
 
 // HTML escape function to prevent XSS in emails
 function escapeHtml(text: string): string {

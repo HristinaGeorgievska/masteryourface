@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { ALLOWED_ORIGINS_SET } from './origins';
+import { ALLOWED_ORIGINS_SET } from './origins.js';
 
 /**
  * Validates the request Origin against the shared allowed-origins list.

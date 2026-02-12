@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { signToken } from './_lib/hmac';
-import { ALLOWED_ORIGINS } from './_lib/origins';
-import { createRateLimiter } from './_lib/ratelimit';
+import { signToken } from './_lib/hmac.js';
+import { ALLOWED_ORIGINS } from './_lib/origins.js';
+import { createRateLimiter } from './_lib/ratelimit.js';
 
 // 20 tokens/hour/IP — generous enough for legitimate page loads + retries
 const tokenRateLimiter = createRateLimiter({
