@@ -1,6 +1,6 @@
 import Footer from "@/components/Footer";
 import { BackToTop } from "@/components/BackToTop";
-import { Clock, MapPin, Package, Users, Sparkles, CheckCircle2, UsersRound, Palette, Sparkle, Heart, ArrowLeft } from "lucide-react";
+import { Clock, MapPin, Sparkles, CheckCircle2, UsersRound, Palette, Sparkle, Heart, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import servicePublic from "@/assets/service-public.jpg";
 import { useCourses } from "@/hooks/useCourses";

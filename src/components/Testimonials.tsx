@@ -48,7 +48,7 @@ export const Testimonials = () => {
         <div className="max-w-4xl mx-auto relative min-h-[200px]">
           {testimonials.map((testimonial, index) => (
             <div
-              key={index}
+              key={testimonial.author}
               className={`absolute inset-0 transition-opacity duration-1000 ${
                 index === currentTestimonial ? "opacity-100" : "opacity-0"
               }`}

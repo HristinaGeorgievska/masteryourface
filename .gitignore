@@ -24,5 +24,7 @@ dist-ssr
 *.sln
 *.sw?
 
-VULN.md
+PPR.md
+PPR_EH.md
+CALL_PREP.md
 GOOGLE_WORKSPACE_SETUP.md

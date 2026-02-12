@@ -1,11 +1,13 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
 
 const NotFound = () => {
   const location = useLocation();
 
   useEffect(() => {
-    console.error("404 Error: User attempted to access non-existent route:", location.pathname);
+    if (import.meta.env.DEV) {
+      console.error("404 Error: User attempted to access non-existent route:", location.pathname);
+    }
   }, [location.pathname]);
 
   return (
@@ -13,9 +15,9 @@ const NotFound = () => {
       <div className="text-center">
         <h1 className="mb-4 text-4xl font-bold">404</h1>
         <p className="mb-4 text-xl text-gray-600">Oops! Stránka nebyla nalezena</p>
-        <a href="/" className="text-blue-500 underline hover:text-blue-700">
+        <Link to="/" className="text-blue-500 underline hover:text-blue-700">
           Zpátky na domovskou stránku
-        </a>
+        </Link>
       </div>
     </div>
   );

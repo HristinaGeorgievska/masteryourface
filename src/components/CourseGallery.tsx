@@ -34,7 +34,7 @@ export const CourseGallery = ({ images, title = "Course Gallery", subtitle = "Se
           >
             <CarouselContent>
               {images.map((image, index) => (
-                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                <CarouselItem key={image} className="md:basis-1/2 lg:basis-1/3">
                   <div className="p-2">
                     <div className="relative aspect-square overflow-hidden rounded-lg transition-shadow">
                       <img

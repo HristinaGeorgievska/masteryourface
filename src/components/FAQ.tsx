@@ -58,10 +58,12 @@ export const FAQ = () => {
 
         <div className="max-w-3xl mx-auto">
           <Accordion type="single" collapsible className="space-y-4">
-            {faqs.map((faq, index) => (
+            {faqs.map((faq) => {
+              const slug = faq.question.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 60);
+              return (
               <AccordionItem
-                key={index}
-                value={`item-${index}`}
+                key={slug}
+                value={slug}
                 className="bg-background rounded-lg px-6 border-0"
               >
                 <AccordionTrigger className="text-left text-lg font-semibold hover:no-underline py-6">
@@ -71,7 +73,8 @@ export const FAQ = () => {
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>
-            ))}
+              );
+            })}
           </Accordion>
         </div>
       </div>

@@ -39,9 +39,9 @@ export const ServicesGrid = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-          {services.map((service, index) => (
+          {services.map((service) => (
             <Card
-              key={index}
+              key={service.link}
               className="group overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col"
             >
               <div className="relative aspect-[4/3] overflow-hidden flex-shrink-0">

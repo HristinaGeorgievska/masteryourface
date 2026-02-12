@@ -1,7 +1,7 @@
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import { BackToTop } from "@/components/BackToTop";
-import { Clock, MapPin, Package, Camera, ArrowLeft, CheckCircle2, Image, Building2, Sparkles } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Image, Building2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import servicePhotography from "@/assets/service-photography.jpg";
 import { SEO } from "@/components/SEO";

@@ -2,7 +2,7 @@ import { HeroSlideshow } from "@/components/HeroSlideshow";
 import { VideoSection } from "@/components/VideoSection";
 import { ServicesGrid } from "@/components/ServicesGrid";
 import { Showcase } from "@/components/Showcase";
-import { Testimonials } from "@/components/Testimonials";
+
 import { FAQ } from "@/components/FAQ"; 
 import Footer from "@/components/Footer";
 import { ScrollReveal } from "@/components/ScrollReveal";
