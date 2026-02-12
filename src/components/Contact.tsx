@@ -132,7 +132,7 @@ const Contact = ({ showHeading = true }: ContactProps) => {
 
             <div className="space-y-4">
               <a 
-                href="mailto:info@masteryourface.cz"
+                href="mailto:hristina.georgievska1@gmail.com"
                 className="flex items-center gap-3 text-foreground hover:text-primary transition-colors group"
               >
                 <div className="p-3 bg-secondary rounded-full group-hover:bg-primary/10 transition-colors">
@@ -140,12 +140,12 @@ const Contact = ({ showHeading = true }: ContactProps) => {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Email</p>
-                  <p className="font-medium">info@masteryourface.cz</p>
+                  <p className="font-medium">hristina.georgievska1@gmail.com</p>
                 </div>
               </a>
 
               <a 
-                href="tel:+420608009013"
+                href="tel:+420602367517"
                 className="flex items-center gap-3 text-foreground hover:text-primary transition-colors group"
               >
                 <div className="p-3 bg-secondary rounded-full group-hover:bg-primary/10 transition-colors">
@@ -153,7 +153,7 @@ const Contact = ({ showHeading = true }: ContactProps) => {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Telefon</p>
-                  <p className="font-medium">608 009 013</p>
+                  <p className="font-medium">602 367 517</p>
                 </div>
               </a>
 
