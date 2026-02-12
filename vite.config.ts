@@ -15,6 +15,12 @@ const ROUTES_TO_PRERENDER = [
   '/portrait'
 ];
 
+// Debug: log env var availability during build (visible in Vercel build logs)
+console.log('[vite.config] VITE_CONTENTFUL_SPACE_ID:', process.env.VITE_CONTENTFUL_SPACE_ID ? '✓ set' : '✗ MISSING');
+console.log('[vite.config] VITE_CONTENTFUL_ACCESS_TOKEN:', process.env.VITE_CONTENTFUL_ACCESS_TOKEN ? '✓ set' : '✗ MISSING');
+console.log('[vite.config] All VITE_ env keys:', Object.keys(process.env).filter(k => k.startsWith('VITE_')));
+console.log('[vite.config] All CONTENTFUL_ env keys:', Object.keys(process.env).filter(k => k.startsWith('CONTENTFUL_')));
+
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   server: {
