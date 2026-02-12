@@ -1,11 +1,11 @@
 import { createClient } from 'contentful';
 
-const space = import.meta.env.CONTENTFUL_SPACE_ID ?? '';
-const accessToken = import.meta.env.CONTENTFUL_ACCESS_TOKEN ?? '';
+const space = import.meta.env.VITE_CONTENTFUL_SPACE_ID ?? '';
+const accessToken = import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN ?? '';
 
 if (!space || !accessToken) {
   console.warn(
-    '[Contentful] Missing CONTENTFUL_SPACE_ID or CONTENTFUL_ACCESS_TOKEN — API calls will fail gracefully.',
+    '[Contentful] Missing VITE_CONTENTFUL_SPACE_ID or VITE_CONTENTFUL_ACCESS_TOKEN — API calls will fail gracefully.',
   );
 }
 
