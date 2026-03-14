@@ -53,9 +53,8 @@ export const HeroSlideshow = () => {
       {slides.map((slide, index) => (
         <div
           key={index}
-          className={`absolute inset-0 transition-opacity duration-1000 ${
-            index === currentSlide ? "opacity-100" : "opacity-0"
-          }`}
+          className={`absolute inset-0 transition-opacity duration-1000 ${index === currentSlide ? "opacity-100" : "opacity-0"
+            }`}
         >
           <img
             src={slide}
@@ -130,11 +129,10 @@ export const HeroSlideshow = () => {
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}
-            className={`w-2 h-2 rounded-full transition-all duration-300 ${
-              index === currentSlide
+            className={`w-2 h-2 rounded-full transition-all duration-300 ${index === currentSlide
                 ? "bg-primary-foreground w-8"
                 : "bg-primary-foreground/50"
-            }`}
+              }`}
             aria-label={`Go to slide ${index + 1}`}
           />
         ))}

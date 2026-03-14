@@ -32,10 +32,10 @@ export default function Portrait() {
               <h1 className="text-3xl md:text-4xl font-bold mb-4">MASTER YOUR IMAGE — Portraits</h1>
               <p className="text-xl text-text-secondary mb-2">Professional Corporate Portraits</p>
               <p className="text-lg text-text-secondary mb-8 leading-relaxed">
-                MASTER YOUR IMAGE přináší profesionální portrétní focení přímo do prostředí vaší firmy. 
+                MASTER YOUR IMAGE přináší profesionální portrétní focení přímo do prostředí vaší firmy.
                 Mobilní ateliér umožní zaměstnancům absolvovat focení během pracovního dne — bez přesunů, bez časových ztrát a v atmosféře, která podporuje přirozený a reprezentativní výsledek.
               </p>
-              
+
               <div className="space-y-4 mb-8">
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 mt-1 flex-shrink-0" />
@@ -57,7 +57,7 @@ export default function Portrait() {
                 </div>
               </div>
             </div>
-            
+
             <div className="relative aspect-[3/4] rounded-lg overflow-hidden shadow-xl">
               <img
                 src={servicePhotography}

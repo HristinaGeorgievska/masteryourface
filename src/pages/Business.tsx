@@ -32,10 +32,10 @@ export default function Business() {
               <h1 className="text-3xl md:text-4xl font-bold mb-4">MASTER YOUR FACE — Business</h1>
               <p className="text-xl text-text-secondary mb-2">Beauty & Confidence for Business</p>
               <p className="text-lg text-text-secondary mb-8 leading-relaxed">
-                Firmy mohou tento workshop využít jako součást interních aktivit, wellbeing programů nebo jako stylový zážitek pro své zaměstnankyně či klientky. 
+                Firmy mohou tento workshop využít jako součást interních aktivit, wellbeing programů nebo jako stylový zážitek pro své zaměstnankyně či klientky.
                 Jde o praktický workshop, který ženám pomáhá cítit se jistěji, upraveněji a profesionálněji v pracovním i osobním životě.
               </p>
-              
+
               <div className="space-y-4 mb-8">
                 <div className="flex items-start gap-3">
                   <Building2 className="w-5 h-5 mt-1 flex-shrink-0" />
@@ -63,7 +63,7 @@ export default function Business() {
                 </div>
               </div>
             </div>
-            
+
             <div className="relative aspect-[3/4] rounded-lg overflow-hidden shadow-xl">
               <img
                 src={serviceCorporate}
@@ -78,77 +78,77 @@ export default function Business() {
       {/* Jak workshop probíhá */}
       <section className="section-padding bg-background-secondary">
         <div className="container mx-auto max-w-6xl px-6 md:px-8">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Jak workshop probíhá</h2>
-            <p className="text-lg text-text-secondary mb-12">
-              Workshop je klidný, přehledný a maximálně praktický. Nikdo se neztratí, nikdo nečeká — všechny postupují společně.
-            </p>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Jak workshop probíhá</h2>
+          <p className="text-lg text-text-secondary mb-12">
+            Workshop je klidný, přehledný a maximálně praktický. Nikdo se neztratí, nikdo nečeká — všechny postupují společně.
+          </p>
 
-              <div className="space-y-6">
-                {/* Step 1 */}
-                <div className="relative">
-                  <div className="flex gap-6 items-start">
-                    <div className="flex-shrink-0">
-                      <div className="w-16 h-16 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold shadow-lg">
-                        1
-                      </div>
-                    </div>
-                    <div className="flex-1 bg-background rounded-xl p-6 shadow-md border border-border/50">
-                      <div className="flex items-center gap-3 mb-3">
-                        <Sparkles className="w-5 h-5 text-primary" />
-                        <h3 className="text-xl font-semibold">Demonstrace na modelce</h3>
-                      </div>
-                      <p className="text-text-secondary leading-relaxed">
-                        Hristina ukáže jeden konkrétní krok na modelce — například přípravu pleti, sjednocení, oči nebo kontury.
-                        Vysvětlí, co je v dané části nejdůležitější, aby make-up vypadal přirozeně a vydržel co nejdéle.
-                      </p>
-                    </div>
+          <div className="space-y-6">
+            {/* Step 1 */}
+            <div className="relative">
+              <div className="flex gap-6 items-start">
+                <div className="flex-shrink-0">
+                  <div className="w-16 h-16 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold shadow-lg">
+                    1
                   </div>
-                  <div className="absolute left-8 top-16 w-0.5 h-6 bg-border"></div>
                 </div>
-
-                {/* Step 2 */}
-                <div className="relative">
-                  <div className="flex gap-6 items-start">
-                    <div className="flex-shrink-0">
-                      <div className="w-16 h-16 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold shadow-lg">
-                        2
-                      </div>
-                    </div>
-                    <div className="flex-1 bg-background rounded-xl p-6 shadow-md border border-border/50">
-                      <div className="flex items-center gap-3 mb-3">
-                        <UsersRound className="w-5 h-5 text-primary" />
-                        <h3 className="text-xl font-semibold">Praktické cvičení</h3>
-                      </div>
-                      <p className="text-text-secondary leading-relaxed">
-                        Ženy následně udělají stejný krok na své vlastní tváři. Každá pracuje svým tempem a má prostor pro vlastní zkoušení.
-                      </p>
-                    </div>
+                <div className="flex-1 bg-background rounded-xl p-6 shadow-md border border-border/50">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Sparkles className="w-5 h-5 text-primary" />
+                    <h3 className="text-xl font-semibold">Demonstrace na modelce</h3>
                   </div>
-                  <div className="absolute left-8 top-16 w-0.5 h-6 bg-border"></div>
-                </div>
-
-                {/* Step 3 */}
-                <div className="relative">
-                  <div className="flex gap-6 items-start">
-                    <div className="flex-shrink-0">
-                      <div className="w-16 h-16 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold shadow-lg">
-                        3
-                      </div>
-                    </div>
-                    <div className="flex-1 bg-background rounded-xl p-6 shadow-md border border-border/50">
-                      <div className="flex items-center gap-3 mb-3">
-                        <CheckCircle2 className="w-5 h-5 text-primary" />
-                        <h3 className="text-xl font-semibold">Individuální zpětná vazba</h3>
-                      </div>
-                      <p className="text-text-secondary leading-relaxed">
-                        Poté Hristina projde jednotlivé ženy, zkontroluje jejich výsledek a každé předá osobní doporučení — co upravit, 
-                        jak produkt aplikovat, aby výsledek působil čistě, lehce a dlouhodobě. Až když je krok u všech zvládnutý, pokračuje se dalším.
-                      </p>
-                    </div>
-                  </div>
+                  <p className="text-text-secondary leading-relaxed">
+                    Hristina ukáže jeden konkrétní krok na modelce — například přípravu pleti, sjednocení, oči nebo kontury.
+                    Vysvětlí, co je v dané části nejdůležitější, aby make-up vypadal přirozeně a vydržel co nejdéle.
+                  </p>
                 </div>
               </div>
+              <div className="absolute left-8 top-16 w-0.5 h-6 bg-border"></div>
+            </div>
+
+            {/* Step 2 */}
+            <div className="relative">
+              <div className="flex gap-6 items-start">
+                <div className="flex-shrink-0">
+                  <div className="w-16 h-16 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold shadow-lg">
+                    2
+                  </div>
+                </div>
+                <div className="flex-1 bg-background rounded-xl p-6 shadow-md border border-border/50">
+                  <div className="flex items-center gap-3 mb-3">
+                    <UsersRound className="w-5 h-5 text-primary" />
+                    <h3 className="text-xl font-semibold">Praktické cvičení</h3>
+                  </div>
+                  <p className="text-text-secondary leading-relaxed">
+                    Ženy následně udělají stejný krok na své vlastní tváři. Každá pracuje svým tempem a má prostor pro vlastní zkoušení.
+                  </p>
+                </div>
+              </div>
+              <div className="absolute left-8 top-16 w-0.5 h-6 bg-border"></div>
+            </div>
+
+            {/* Step 3 */}
+            <div className="relative">
+              <div className="flex gap-6 items-start">
+                <div className="flex-shrink-0">
+                  <div className="w-16 h-16 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold shadow-lg">
+                    3
+                  </div>
+                </div>
+                <div className="flex-1 bg-background rounded-xl p-6 shadow-md border border-border/50">
+                  <div className="flex items-center gap-3 mb-3">
+                    <CheckCircle2 className="w-5 h-5 text-primary" />
+                    <h3 className="text-xl font-semibold">Individuální zpětná vazba</h3>
+                  </div>
+                  <p className="text-text-secondary leading-relaxed">
+                    Poté Hristina projde jednotlivé ženy, zkontroluje jejich výsledek a každé předá osobní doporučení — co upravit,
+                    jak produkt aplikovat, aby výsledek působil čistě, lehce a dlouhodobě. Až když je krok u všech zvládnutý, pokračuje se dalším.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
       </section>
 
       <Contact showHeading={false} />
