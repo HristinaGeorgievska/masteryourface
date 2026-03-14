@@ -6,12 +6,14 @@ import { contentfulClient } from "@/lib/contentful";
 export interface FormattedCourse {
   id: string;
   city: string;
-  address: string;
+  address?: string;
   date: string;
   timeRange: string;
   status: boolean;
   bookingUrl: string;
   heroImage?: string;
+  batch?: number;
+  price?: number;
 }
 
 /** Allowed hostnames for Contentful CDN image assets. */
@@ -61,10 +63,12 @@ function stripHtml(text: unknown): string {
 
 interface CourseFields {
   city: string;
-  adress: string;
+  adress?: string;
   date: string;
   status: boolean;
   bookingUrl: string;
+  batch?: number;
+  price?: number;
   hero?: { fields: { file: { url: string } } };
 }
 
@@ -97,12 +101,14 @@ const fetchCourses = async (): Promise<FormattedCourse[]> => {
     return {
       id: item.sys.id,
       city: stripHtml(fields.city),
-      address: stripHtml(fields.adress),
+      address: fields.adress ? stripHtml(fields.adress) : undefined,
       date: formattedDate,
       timeRange: `${startTime} - ${endTime}`,
       status: fields.status,
       bookingUrl,
       heroImage,
+      batch: fields.batch,
+      price: fields.price,
     };
   });
 };

@@ -186,9 +186,14 @@ export default function Individual() {
                   <span>{course.timeRange}</span>
                 </div>
                 {course.address && (
-                   <div className="text-sm text-text-secondary mb-6">
+                   <div className="text-sm text-text-secondary mb-2">
                      {course.address}
                    </div>
+                )}
+                {course.price != null && (
+                  <div className="text-lg font-semibold mb-6">
+                    {course.price.toLocaleString("cs-CZ")} Kč
+                  </div>
                 )}
                 
                 {course.status ? (
