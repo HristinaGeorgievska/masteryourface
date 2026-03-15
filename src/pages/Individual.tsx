@@ -13,16 +13,17 @@ export default function Individual() {
 
   useEffect(() => {
     if (location.hash === '#dates') {
-      const element = document.getElementById('dates');
-      if (element) {
-        setTimeout(() => {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-      }
+      const timer = setTimeout(() => {
+        const element = document.getElementById('dates');
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 500);
+      return () => clearTimeout(timer);
     } else if (!location.hash) {
       window.scrollTo(0, 0);
     }
-  }, [location]);
+  }, [location, isLoading]);
 
   return (
     <div className="min-h-screen">
