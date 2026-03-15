@@ -1,13 +1,28 @@
 import Footer from "@/components/Footer";
 import { BackToTop } from "@/components/BackToTop";
 import { Clock, MapPin, Sparkles, CheckCircle2, UsersRound, Palette, Sparkle, Heart, ArrowLeft } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import servicePublic from "@/assets/service-public.jpg";
 import { useCourses } from "@/hooks/useCourses";
 import { SEO } from "@/components/SEO";
 
 export default function Individual() {
   const { data: courses, isLoading, error } = useCourses();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash === '#dates') {
+      const element = document.getElementById('dates');
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    } else if (!location.hash) {
+      window.scrollTo(0, 0);
+    }
+  }, [location]);
 
   return (
     <div className="min-h-screen">
