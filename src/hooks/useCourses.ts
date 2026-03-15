@@ -80,7 +80,11 @@ const fetchCourses = async (): Promise<FormattedCourse[]> => {
 
   return response.items.map((item) => {
     const fields = item.fields as unknown as CourseFields;
-    const dateObj = fields.date ? parseISO(fields.date) : new Date();
+    
+    // Strip timezone strings (e.g. "+01:00") to treat it as a floating local time.
+    // "2026-04-15T10:00:00+01:00" -> "2026-04-15T10:00"
+    const rawDateStr = fields.date ? fields.date.substring(0, 16) : new Date().toISOString();
+    const dateObj = parseISO(rawDateStr);
 
     const formattedDate = format(dateObj, "d. MMMM yyyy", { locale: cs });
     const startTime = format(dateObj, "HH:mm");

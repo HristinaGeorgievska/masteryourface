@@ -160,7 +160,10 @@ export default function Individual() {
       {/* Upcoming Courses */}
       <section id="dates" className="section-padding bg-background">
         <div className="container mx-auto max-w-6xl px-6 md:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-left">Nadcházející termíny</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-left">Nadcházející termíny</h2>
+          <p className="text-lg text-text-secondary mb-12 max-w-3xl">
+            Přesná adresa konání bude účastníkům upřesněna e-mailem v dostatečném předstihu před začátkem kurzu.
+          </p>
           
           {isLoading && <p className="text-center text-lg text-text-secondary">Načítání termínů...</p>}
           {error && <p className="text-center text-lg text-red-500">Nepodařilo se načíst termíny.</p>}
