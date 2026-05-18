@@ -78,13 +78,20 @@ const fetchCourses = async (): Promise<FormattedCourse[]> => {
     order: ["fields.date"],
   });
 
-  return response.items.map((item) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  return response.items.reduce<FormattedCourse[]>((acc, item) => {
     const fields = item.fields as unknown as CourseFields;
     
     // Strip timezone strings (e.g. "+01:00") to treat it as a floating local time.
     // "2026-04-15T10:00:00+01:00" -> "2026-04-15T10:00"
     const rawDateStr = fields.date ? fields.date.substring(0, 16) : new Date().toISOString();
     const dateObj = parseISO(rawDateStr);
+
+    if (dateObj < today) {
+      return acc;
+    }
 
     const formattedDate = format(dateObj, "d. MMMM yyyy", { locale: cs });
     const startTime = format(dateObj, "HH:mm");
@@ -102,7 +109,7 @@ const fetchCourses = async (): Promise<FormattedCourse[]> => {
       ? fields.bookingUrl
       : "#";
 
-    return {
+    acc.push({
       id: item.sys.id,
       city: stripHtml(fields.city),
       address: fields.adress ? stripHtml(fields.adress) : undefined,
@@ -113,8 +120,10 @@ const fetchCourses = async (): Promise<FormattedCourse[]> => {
       heroImage,
       batch: fields.batch,
       price: fields.price,
-    };
-  });
+    });
+
+    return acc;
+  }, []);
 };
 
 export const useCourses = () => {
