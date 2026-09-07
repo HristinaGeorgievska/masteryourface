@@ -12,7 +12,9 @@ const ROUTES_TO_PRERENDER = [
   '/',
   '/individual',
   '/business',
-  '/portrait'
+  '/portrait',
+  '/obchodni-podminky',
+  '/gdpr'
 ];
 
 // Debug: log env var availability during build (visible in Vercel build logs)

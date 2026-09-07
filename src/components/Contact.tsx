@@ -2,11 +2,18 @@ import { Mail, Phone, Instagram, Globe } from "lucide-react";
 
 interface ContactProps {
   showHeading?: boolean;
+  className?: string;
 }
 
-const Contact = ({ showHeading = true }: ContactProps) => {
+const Contact = ({
+  showHeading = true,
+  className = "bg-background-secondary",
+}: ContactProps) => {
+  const isSecondary = className.includes("bg-background-secondary");
+  const iconBg = isSecondary ? "bg-background shadow-sm" : "bg-secondary";
+
   return (
-    <section id="kontakt" className="py-24 px-6 bg-background">
+    <section id="kontakt" className={`py-24 px-6 ${className}`}>
       <div className="container mx-auto max-w-6xl">
         {showHeading && (
           <h2 className="font-serif text-4xl md:text-5xl font-semibold text-center mb-16">
@@ -30,7 +37,7 @@ const Contact = ({ showHeading = true }: ContactProps) => {
               href="mailto:hristina.georgievska1@gmail.com"
               className="flex items-center gap-3 text-foreground hover:text-primary transition-colors group"
             >
-              <div className="p-3 bg-secondary rounded-full group-hover:bg-primary/10 transition-colors">
+              <div className={`p-3 rounded-full group-hover:bg-primary/10 transition-colors ${iconBg}`}>
                 <Mail className="h-5 w-5" />
               </div>
               <div>
@@ -43,7 +50,7 @@ const Contact = ({ showHeading = true }: ContactProps) => {
               href="tel:+420602367517"
               className="flex items-center gap-3 text-foreground hover:text-primary transition-colors group"
             >
-              <div className="p-3 bg-secondary rounded-full group-hover:bg-primary/10 transition-colors">
+              <div className={`p-3 rounded-full group-hover:bg-primary/10 transition-colors ${iconBg}`}>
                 <Phone className="h-5 w-5" />
               </div>
               <div>
@@ -58,7 +65,7 @@ const Contact = ({ showHeading = true }: ContactProps) => {
               rel="noopener noreferrer"
               className="flex items-center gap-3 text-foreground hover:text-primary transition-colors group"
             >
-              <div className="p-3 bg-secondary rounded-full group-hover:bg-primary/10 transition-colors">
+              <div className={`p-3 rounded-full group-hover:bg-primary/10 transition-colors ${iconBg}`}>
                 <Instagram className="h-5 w-5" />
               </div>
               <div>
@@ -73,7 +80,7 @@ const Contact = ({ showHeading = true }: ContactProps) => {
               rel="noopener noreferrer"
               className="flex items-center gap-3 text-foreground hover:text-primary transition-colors group"
             >
-              <div className="p-3 bg-secondary rounded-full group-hover:bg-primary/10 transition-colors">
+              <div className={`p-3 rounded-full group-hover:bg-primary/10 transition-colors ${iconBg}`}>
                 <Globe className="h-5 w-5" />
               </div>
               <div>

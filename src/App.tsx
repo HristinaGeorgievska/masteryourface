@@ -14,6 +14,8 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const Individual = lazy(() => import("./pages/Individual"));
 const Business = lazy(() => import("./pages/Business"));
 const Portrait = lazy(() => import("./pages/Portrait"));
+const Terms = lazy(() => import("./pages/Terms"));
+const Gdpr = lazy(() => import("./pages/Gdpr"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -55,6 +57,8 @@ const App = () => {
                 <Route path="/individual" element={<Individual />} />
                 <Route path="/business" element={<Business />} />
                 <Route path="/portrait" element={<Portrait />} />
+                <Route path="/obchodni-podminky" element={<Terms />} />
+                <Route path="/gdpr" element={<Gdpr />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

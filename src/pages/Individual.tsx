@@ -236,7 +236,7 @@ export default function Individual() {
       </section>
 
       <BackToTop />
-      <Footer />
+      <Footer className="bg-background-secondary" />
     </div>
   );
 }

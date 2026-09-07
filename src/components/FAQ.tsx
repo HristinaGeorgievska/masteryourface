@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
   Accordion,
   AccordionContent,
@@ -46,11 +47,27 @@ const faqs = [
     question: "Nabízíte i čistě individuální lekce pro jednu osobu?",
     answer: "Ano. Individuální \"one-to-one\" lekce jsou možné podle domluvy a probíhají ve stejném klidném, praktickém formátu.",
   },
+  {
+    question: "Jak je to se stornem nebo vracením peněz, pokud se nemohu zúčastnit?",
+    answer: (
+      <>
+        Pokud svou účast zrušíte nejméně 7 dní před konáním kurzu, zaplacená částka vám nepropadá a máte nárok na přesun rezervace na další nadcházející termín. Při zrušení méně než 7 dní předem nebo v případě neúčasti zaplacená částka v plné výši propadá. V případě zrušení kurzu ze strany poskytovatele vám budou vráceny všechny uhrazené prostředky. Kompletní pravidla naleznete v našich{" "}
+        <Link to="/obchodni-podminky" className="underline hover:text-primary transition-colors">
+          obchodních podmínkách
+        </Link>
+        .
+      </>
+    ),
+  },
 ];
 
-export const FAQ = () => {
+interface FAQProps {
+  className?: string;
+}
+
+export const FAQ = ({ className = "bg-background" }: FAQProps) => {
   return (
-    <section className="section-padding bg-background-secondary">
+    <section className={`section-padding ${className}`}>
       <div className="container-custom">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">Často kladené otázky</h2>
@@ -64,7 +81,7 @@ export const FAQ = () => {
               <AccordionItem
                 key={slug}
                 value={slug}
-                className="bg-background rounded-lg px-6 border-0"
+                className="bg-background-secondary rounded-lg px-6 border-0"
               >
                 <AccordionTrigger className="text-left text-lg font-semibold hover:no-underline py-6">
                   {faq.question}

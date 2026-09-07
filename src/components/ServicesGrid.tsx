@@ -30,9 +30,15 @@ const services = [
   },
 ];
 
-export const ServicesGrid = () => {
+interface ServicesGridProps {
+  className?: string;
+}
+
+export const ServicesGrid = ({
+  className = "bg-background",
+}: ServicesGridProps) => {
   return (
-    <section id="services" className="section-padding bg-background">
+    <section id="services" className={`section-padding ${className}`}>
       <div className="container-custom">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">Nabídka služeb</h2>

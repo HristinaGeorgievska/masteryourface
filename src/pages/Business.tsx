@@ -151,10 +151,10 @@ export default function Business() {
         </div>
       </section>
 
-      <Contact showHeading={false} />
+      <Contact showHeading={false} className="bg-background" />
 
       <BackToTop />
-      <Footer />
+      <Footer className="bg-background-secondary" />
     </div>
   );
 }

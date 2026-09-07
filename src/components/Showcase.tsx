@@ -9,7 +9,11 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { useShowcase } from "@/hooks/useShowcase";
 
-export const Showcase = () => {
+interface ShowcaseProps {
+  className?: string;
+}
+
+export const Showcase = ({ className = "bg-background" }: ShowcaseProps = {}) => {
   const { data: items, isLoading, error } = useShowcase();
 
   if (error) {
@@ -21,7 +25,7 @@ export const Showcase = () => {
   }
 
   return (
-    <section className="section-padding bg-background">
+    <section className={`section-padding ${className}`}>
       <ScrollReveal>
         <div className="container-custom">
           <div className="text-center mb-16">
