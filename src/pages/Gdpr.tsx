@@ -18,17 +18,17 @@ export default function Gdpr() {
         path="/gdpr"
       />
 
-      {/* Back to Home Button */}
-      <Link
-        to="/"
-        className="fixed top-6 left-6 md:top-8 md:left-8 z-50 flex items-center gap-2 text-foreground hover:text-foreground/80 transition-colors font-serif bg-background/80 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-xs md:shadow-none md:bg-transparent"
-      >
-        <ArrowLeft className="w-5 h-5" />
-        <span className="font-medium text-sm md:text-base">Zpátky na domovskou stránku</span>
-      </Link>
-
-      <main className="flex-1 pt-24 pb-16 md:pt-28 md:pb-24 px-6">
+      <main className="flex-1 pt-28 pb-16 md:pt-36 md:pb-24 px-6">
         <div className="container mx-auto max-w-3xl">
+          <div className="mb-8">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-2.5 text-base md:text-lg font-medium text-foreground hover:text-foreground/75 transition-colors font-serif group"
+            >
+              <ArrowLeft className="w-5 h-5 md:w-6 md:h-6 transition-transform group-hover:-translate-x-1" />
+              <span>Zpátky na domovskou stránku</span>
+            </Link>
+          </div>
           <h1 className="font-serif text-3xl md:text-5xl font-bold tracking-tight mb-8 text-foreground">
             ZPRACOVÁNÍ OSOBNÍCH ÚDAJŮ
           </h1>

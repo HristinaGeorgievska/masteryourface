@@ -1,13 +1,21 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import hero1 from "@/assets/hero-1.jpg";
 import hero2 from "@/assets/hero-2.jpg";
 import hero3 from "@/assets/hero-3.jpg";
+import hero1_v2 from "@/assets/hero-2/hero-1.jpg";
+import hero2_v2 from "@/assets/hero-2/hero-2.jpg";
+import hero3_v2 from "@/assets/hero-2/hero-3.jpg";
+import hero1_v3 from "@/assets/hero-3/hero-1.jpg";
+import hero2_v3 from "@/assets/hero-3/hero-2.jpg";
 import servicePublic from "@/assets/service-public.jpg";
 import { useCourses, type FormattedCourse } from "@/hooks/useCourses";
 
-const staticSlides = [hero1, hero2, hero3];
+const staticSlidesV1 = [hero1, hero2, hero3];
+const staticSlidesV2 = [hero1_v2, hero2_v2, hero3_v2];
+const staticSlidesV3 = [hero1_v3, hero2_v3];
 
 /** Format a number as Czech crowns, e.g. 4990 → "4 990 Kč" */
 function formatPrice(price: number): string {
@@ -23,6 +31,78 @@ interface ActiveBatch {
 export const HeroSlideshow = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const { data: courses } = useCourses();
+
+  // DEV-ONLY Hero photos switcher state
+  const [heroSet, setHeroSet] = useState<"v1" | "v2" | "v3">((): "v1" | "v2" | "v3" => {
+    if (!import.meta.env.DEV) return "v1";
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const queryHero = params.get("hero");
+      if (queryHero === "3" || queryHero === "v3") return "v3";
+      if (queryHero === "2" || queryHero === "v2") return "v2";
+      if (queryHero === "1" || queryHero === "v1") return "v1";
+      const saved = localStorage.getItem("dev_hero_set");
+      if (saved === "v3") return "v3";
+      if (saved === "v2") return "v2";
+    } catch {
+      // ignore
+    }
+    return "v1";
+  });
+
+  const toggleHeroSet = useCallback(() => {
+    setHeroSet((prev) => {
+      const next: "v1" | "v2" | "v3" = prev === "v1" ? "v2" : prev === "v2" ? "v3" : "v1";
+      try {
+        localStorage.setItem("dev_hero_set", next);
+      } catch {
+        // ignore
+      }
+      const label =
+        next === "v3"
+          ? "Hero Set: 3 (assets/hero-3, 2 fotky)"
+          : next === "v2"
+          ? "Hero Set: 2 (assets/hero-2)"
+          : "Hero Set: 1 (assets/hero-*.jpg)";
+      toast.info(label, {
+        description: "Přepnuto (Shift + H nebo DEV badge)",
+        duration: 2500,
+      });
+      return next;
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!import.meta.env.DEV) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (
+        target &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+
+      // Secret shortcut: Shift + H or Alt + H
+      if ((e.key === "H" && e.shiftKey) || (e.key.toLowerCase() === "h" && e.altKey)) {
+        e.preventDefault();
+        toggleHeroSet();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [toggleHeroSet]);
+
+  const staticSlides =
+    heroSet === "v3"
+      ? staticSlidesV3
+      : heroSet === "v2"
+      ? staticSlidesV2
+      : staticSlidesV1;
 
   const activeBatch = useMemo((): ActiveBatch | null => {
     if (!courses) return null;
@@ -55,7 +135,7 @@ export const HeroSlideshow = () => {
       return [firstSlide, ...staticSlides];
     }
     return staticSlides;
-  }, [activeBatch]);
+  }, [activeBatch, staticSlides]);
 
   useEffect(() => {
     const isCourseSlide = activeBatch && currentSlide === 0;
@@ -68,17 +148,16 @@ export const HeroSlideshow = () => {
     return () => clearTimeout(timer);
   }, [currentSlide, slides.length, activeBatch]);
 
-  // Reset to slide 0 if slides configuration changes (e.g. course loads)
+  // Reset to slide 0 if slides configuration changes (e.g. course loads or heroSet changes)
   useEffect(() => {
     setCurrentSlide(0);
-  }, [activeBatch]);
+  }, [activeBatch, heroSet]);
 
   const scrollToServices = () => {
     document.getElementById("services")?.scrollIntoView({ behavior: "smooth" });
   };
 
   const isCourseSlide = activeBatch && currentSlide === 0;
-
 
   return (
     <section className="relative h-screen min-h-[600px] overflow-hidden">
@@ -108,7 +187,7 @@ export const HeroSlideshow = () => {
       <div className="relative z-10 flex h-full flex-col items-center justify-center text-center px-6 transition-all duration-500">
         {isCourseSlide && activeBatch ? (
           <>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-primary-foreground mb-4 tracking-tight">
+            <h1 id="hero-header" className="text-4xl md:text-6xl lg:text-7xl font-bold text-primary-foreground mb-4 tracking-tight">
               MASTER YOUR FACE
             </h1>
             <p className="text-base md:text-lg lg:text-xl text-primary-foreground/90 max-w-2xl mb-4 font-light">
@@ -145,7 +224,7 @@ export const HeroSlideshow = () => {
           </>
         ) : (
           <>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-primary-foreground mb-6 tracking-tight">
+            <h1 id="hero-header" className="text-5xl md:text-7xl lg:text-8xl font-bold text-primary-foreground mb-6 tracking-tight">
               MASTER YOUR FACE
             </h1>
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary-foreground mb-6 tracking-tight">
@@ -180,6 +259,33 @@ export const HeroSlideshow = () => {
           />
         ))}
       </div>
+
+      {/* DEV ONLY Hero Switcher floating badge */}
+      {import.meta.env.DEV && (
+        <button
+          type="button"
+          onClick={toggleHeroSet}
+          title="DEV ONLY: Klikněte nebo stiskněte Shift + H pro přepnutí fotografií Hero sekce"
+          className="fixed bottom-4 left-4 z-50 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/85 hover:bg-black text-white text-xs font-mono shadow-2xl border border-white/20 backdrop-blur-md transition-all opacity-40 hover:opacity-100 cursor-pointer"
+        >
+          <span
+            className={`inline-block w-2 h-2 rounded-full ${
+              heroSet === "v3"
+                ? "bg-sky-400"
+                : heroSet === "v2"
+                ? "bg-amber-400"
+                : "bg-emerald-400"
+            } animate-pulse`}
+          />
+          <span>
+            HERO: {heroSet === "v3" ? "SET 3 (hero-3)" : heroSet === "v2" ? "SET 2 (hero-2)" : "SET 1 (normal)"}
+          </span>
+          <kbd className="text-[10px] text-white/60 bg-white/10 px-1.5 py-0.5 rounded">
+            Shift+H
+          </kbd>
+        </button>
+      )}
     </section>
   );
 };
+

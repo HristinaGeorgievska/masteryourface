@@ -8,6 +8,7 @@ import { Suspense, lazy, useEffect } from "react";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { CookieBanner } from "@/components/CookieBanner";
 import { useMetaPixel } from "@/hooks/useMetaPixel";
+import { Navbar } from "@/components/Navbar";
 
 const Index = lazy(() => import("./pages/Index"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -49,6 +50,7 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <ScrollToTop />
+          <Navbar />
           <PrerenderReady />
           <ErrorBoundary>
             <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>

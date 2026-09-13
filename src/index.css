@@ -114,9 +114,10 @@
     @apply font-serif;
   }
   
-  /* Smooth scroll pouze pro anchor linky */
-  html:has(a[href^="#"]:focus) {
+  html {
     scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    scrollbar-gutter: stable;
   }
 }
 

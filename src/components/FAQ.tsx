@@ -67,7 +67,7 @@ interface FAQProps {
 
 export const FAQ = ({ className = "bg-background" }: FAQProps) => {
   return (
-    <section className={`section-padding ${className}`}>
+    <section id="faq" className={`section-padding ${className}`}>
       <div className="container-custom">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">Často kladené otázky</h2>

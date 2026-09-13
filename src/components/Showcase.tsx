@@ -25,7 +25,7 @@ export const Showcase = ({ className = "bg-background" }: ShowcaseProps = {}) =>
   }
 
   return (
-    <section className={`section-padding ${className}`}>
+    <section id="portfolio" className={`section-padding ${className}`}>
       <ScrollReveal>
         <div className="container-custom">
           <div className="text-center mb-16">

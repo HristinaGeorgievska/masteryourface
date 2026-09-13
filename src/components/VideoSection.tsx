@@ -8,7 +8,7 @@ export const VideoSection = ({
   className = "bg-background-secondary",
 }: VideoSectionProps) => {
   return (
-    <section id="video-section" className={`section-padding ${className}`}>
+    <section id="o-hristine" className={`section-padding ${className}`}>
       <div className="container-custom">
         <div className="grid gap-12 md:grid-cols-2 items-center">
           <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl min-h-[320px] bg-muted">

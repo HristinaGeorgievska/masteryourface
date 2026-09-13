@@ -24,6 +24,12 @@ export function BackToTop() {
       top: 0,
       behavior: "smooth",
     });
+
+    // Odstraníme hash z URL stejně jako při kliknutí na logo
+    if (window.location.hash) {
+      window.history.pushState(null, "", window.location.pathname);
+    }
+    window.dispatchEvent(new Event("clear-anchor"));
   };
 
   return (
