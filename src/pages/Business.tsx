@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 import { BackToTop } from "@/components/BackToTop";
 import { Sparkles, CheckCircle2, UsersRound, Palette, Sparkle, Target, Building2, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
-import serviceCorporate from "@/assets/service-corporate.jpg";
+import serviceCorporate from "@/assets/service-corporate.webp";
 import { SEO } from "@/components/SEO";
 
 export default function Business() {
@@ -69,6 +69,8 @@ export default function Business() {
                 src={serviceCorporate}
                 alt="Firemní beauty workshop Master Your Face Business"
                 className="w-full h-full object-cover"
+                loading="lazy"
+                decoding="async"
               />
             </div>
           </div>

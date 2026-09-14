@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { contentfulClient } from "@/lib/contentful";
+import { contentfulClient, formatContentfulUrl } from "@/lib/contentful";
 
 export interface CoursePhotoItem {
   id: string;
   url: string;
+  thumbnailUrl: string;
   title?: string;
   order?: number;
 }
@@ -68,12 +69,13 @@ const fetchCoursePhotos = async (): Promise<CoursePhotoItem[]> => {
       rawPhoto.forEach((asset, subIdx) => {
         const rawUrl = asset?.fields?.file?.url;
         if (rawUrl) {
-          const url = sanitizeCdnImageUrl(rawUrl);
-          if (url) {
+          const rawSanitized = sanitizeCdnImageUrl(rawUrl);
+          if (rawSanitized) {
             const assetTitle = typeof asset.fields?.title === "string" ? stripHtml(asset.fields.title) : undefined;
             photos.push({
               id: asset.sys?.id || `${item.sys.id}-${subIdx}`,
-              url,
+              url: formatContentfulUrl(rawSanitized, { width: 1600, quality: 85, format: "webp" }),
+              thumbnailUrl: formatContentfulUrl(rawSanitized, { width: 720, quality: 80, format: "webp" }),
               title: assetTitle || itemTitle,
               order,
             });
@@ -83,12 +85,13 @@ const fetchCoursePhotos = async (): Promise<CoursePhotoItem[]> => {
     }
     // Handle case where 'photo' is a single Asset
     else if (rawPhoto?.fields?.file?.url) {
-      const url = sanitizeCdnImageUrl(rawPhoto.fields.file.url);
-      if (url) {
+      const rawSanitized = sanitizeCdnImageUrl(rawPhoto.fields.file.url);
+      if (rawSanitized) {
         const assetTitle = typeof rawPhoto.fields?.title === "string" ? stripHtml(rawPhoto.fields.title) : undefined;
         photos.push({
           id: item.sys.id,
-          url,
+          url: formatContentfulUrl(rawSanitized, { width: 1600, quality: 85, format: "webp" }),
+          thumbnailUrl: formatContentfulUrl(rawSanitized, { width: 720, quality: 80, format: "webp" }),
           title: itemTitle || assetTitle,
           order,
         });

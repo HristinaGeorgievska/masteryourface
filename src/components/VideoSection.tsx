@@ -1,4 +1,4 @@
-import hristinaImg from '../assets/hristinageorgievska.jpg';
+import hristinaImg from '../assets/hristinageorgievska.webp';
 
 interface VideoSectionProps {
   className?: string;
@@ -11,12 +11,13 @@ export const VideoSection = ({
     <section id="o-hristine" className={`section-padding ${className}`}>
       <div className="container-custom">
         <div className="grid gap-12 md:grid-cols-2 items-center">
-          <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl min-h-[320px] bg-muted">
+          <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl min-h-[320px] bg-muted aspect-[3/4] md:aspect-auto">
             <img
               src={hristinaImg}
               alt="Hristina Georgievska"
               className="w-full h-full object-cover"
               loading="lazy"
+              decoding="async"
             />
           </div>
 

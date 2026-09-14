@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 import { BackToTop } from "@/components/BackToTop";
 import { ArrowLeft, CheckCircle2, Image, Building2 } from "lucide-react";
 import { Link } from "react-router-dom";
-import servicePhotography from "@/assets/service-photography.jpg";
+import servicePhotography from "@/assets/service-photography.webp";
 import { SEO } from "@/components/SEO";
 
 export default function Portrait() {
@@ -61,8 +61,10 @@ export default function Portrait() {
             <div className="relative aspect-[3/4] rounded-lg overflow-hidden shadow-xl">
               <img
                 src={servicePhotography}
-                alt="Profesionální firemní portrétní focení Master Your Image"
+                alt="Profesionální portrét od Hristiny Georgievské"
                 className="w-full h-full object-cover"
+                loading="lazy"
+                decoding="async"
               />
             </div>
           </div>

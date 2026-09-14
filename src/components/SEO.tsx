@@ -6,6 +6,7 @@ interface SEOProps {
   path: string;
   image?: string;
   type?: "website" | "article";
+  jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
 }
 
 const SITE_URL = "https://masteryourface.cz";
@@ -19,6 +20,7 @@ export const SEO = ({
   path,
   image = DEFAULT_IMAGE,
   type = "website",
+  jsonLd,
 }: SEOProps) => {
   const fullUrl = `${SITE_URL}${path}`;
   const fullTitle = path === "/" ? title : `${title} | ${SITE_NAME}`;
@@ -43,6 +45,17 @@ export const SEO = ({
     { tag: "meta", attributes: { name: "twitter:title", content: fullTitle } },
     { tag: "meta", attributes: { name: "twitter:description", content: description } },
     { tag: "meta", attributes: { name: "twitter:image", content: image } },
+
+    // Structured Data (JSON-LD)
+    ...(jsonLd
+      ? [
+          {
+            tag: "script" as const,
+            attributes: { type: "application/ld+json" },
+            textContent: JSON.stringify(jsonLd),
+          },
+        ]
+      : []),
   ]);
 
   return null;

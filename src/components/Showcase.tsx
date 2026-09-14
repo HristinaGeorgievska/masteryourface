@@ -63,6 +63,7 @@ export const Showcase = ({ className = "bg-background" }: ShowcaseProps = {}) =>
                             alt={item.name || item.client || "Portfolio ukázka - Master Your Face"}
                             className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-90"
                             loading="lazy"
+                            decoding="async"
                           />
                           <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/70 to-transparent p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                             <div className="text-white flex flex-col justify-end gap-2">

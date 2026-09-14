@@ -43,7 +43,8 @@ export default defineConfig(({ mode }) => ({
       renderer: puppeteerRenderer,
       rendererOptions: {
         renderAfterDocumentEvent: 'prerender-ready',
-        timeout: 30000,
+        timeout: 10000,
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu'],
       },
       postProcess(renderedRoute) {
         // Ensure proper doctype and clean HTML

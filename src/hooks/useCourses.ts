@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { format, parseISO } from "date-fns";
 import { cs } from "date-fns/locale";
-import { contentfulClient } from "@/lib/contentful";
+import { contentfulClient, formatContentfulUrl } from "@/lib/contentful";
 
 export interface FormattedCourse {
   id: string;
@@ -102,7 +102,10 @@ const fetchCourses = async (): Promise<FormattedCourse[]> => {
 
     let heroImage: string | undefined;
     if (fields.hero?.fields?.file?.url) {
-      heroImage = sanitizeCdnImageUrl(fields.hero.fields.file.url) || undefined;
+      const sanitized = sanitizeCdnImageUrl(fields.hero.fields.file.url);
+      heroImage = sanitized
+        ? formatContentfulUrl(sanitized, { width: 1920, quality: 82, format: "webp" })
+        : undefined;
     }
 
     const bookingUrl = isSafeBookingUrl(fields.bookingUrl)

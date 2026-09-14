@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 interface HeadTag {
-  tag: "title" | "meta" | "link";
+  tag: "title" | "meta" | "link" | "script";
   attributes?: Record<string, string>;
   textContent?: string;
 }

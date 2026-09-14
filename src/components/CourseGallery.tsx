@@ -113,12 +113,13 @@ export const CourseGallery = ({
                     className="group relative aspect-[9/16] overflow-hidden rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer bg-muted"
                   >
                     <img
-                      src={photo.url}
+                      src={photo.thumbnailUrl || photo.url}
                       alt={`Fotografie z kurzu ${index + 1}`}
                       className={`w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 ${
                         isLastWithMore ? "grayscale-[30%]" : ""
                       }`}
                       loading="lazy"
+                      decoding="async"
                     />
 
                     {/* Regular hover overlay */}
@@ -213,6 +214,7 @@ export const CourseGallery = ({
                 src={activePhoto.url}
                 alt={`Fotografie z kurzu ${lightboxIndex + 1}`}
                 className="w-full h-full object-cover animate-in fade-in-50 duration-300"
+                decoding="async"
               />
             </div>
           </div>

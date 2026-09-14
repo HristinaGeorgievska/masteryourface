@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { contentfulClient } from "@/lib/contentful";
+import { contentfulClient, formatContentfulUrl } from "@/lib/contentful";
 
 export interface ShowcaseItem {
   id: string;
@@ -53,7 +53,8 @@ const fetchShowcase = async (): Promise<ShowcaseItem[]> => {
 
     let imageUrl = "";
     if (fields.image?.fields?.file?.url) {
-      imageUrl = sanitizeCdnImageUrl(fields.image.fields.file.url as string);
+      const sanitized = sanitizeCdnImageUrl(fields.image.fields.file.url as string);
+      imageUrl = formatContentfulUrl(sanitized, { width: 800, quality: 80, format: "webp" });
     }
 
     return {

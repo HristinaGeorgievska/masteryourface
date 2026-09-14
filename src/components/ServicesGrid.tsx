@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Users, Building2, Camera } from "lucide-react";
-import servicePublic from "@/assets/service-public.jpg";
-import serviceCorporate from "@/assets/service-corporate.jpg";
-import servicePhotography from "@/assets/service-photography.jpg";
+import servicePublic from "@/assets/service-public.webp";
+import serviceCorporate from "@/assets/service-corporate.webp";
+import servicePhotography from "@/assets/service-photography.webp";
 import { Link } from "react-router-dom";
 
 const services = [
@@ -55,6 +55,8 @@ export const ServicesGrid = ({
                   src={service.image}
                   alt={service.title}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 <div className="absolute bottom-4 left-4">

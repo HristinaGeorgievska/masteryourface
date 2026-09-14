@@ -3,7 +3,7 @@ import { BackToTop } from "@/components/BackToTop";
 import { Clock, MapPin, Sparkles, CheckCircle2, UsersRound, Palette, Sparkle, Heart, ArrowLeft } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import servicePublic from "@/assets/service-public.jpg";
+import servicePublic from "@/assets/service-public.webp";
 import { useCourses } from "@/hooks/useCourses";
 import { SEO } from "@/components/SEO";
 
@@ -31,6 +31,22 @@ export default function Individual() {
         title="Individuální make-up kurzy"
         description="Objevte make-up, který dává smysl. Praktický workshop s Hristinou Georgievskou v Praze, Brně a Bratislavě. Luxusní atmosféra, osobní přístup."
         path="/individual"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Course",
+          "name": "Individuální make-up kurz Master Your Face",
+          "description": "Praktický make-up workshop s Hristinou Georgievskou v Praze, Brně a Bratislavě. Luxusní atmosféra, osobní přístup a techniky líčení přizpůsobené vašim rysům.",
+          "provider": {
+            "@type": "BeautySalon",
+            "name": "Master Your Face",
+            "url": "https://masteryourface.cz",
+          },
+          "instructor": {
+            "@type": "Person",
+            "name": "Hristina Georgievska",
+            "url": "https://masteryourface.cz",
+          },
+        }}
       />
       {/* About the Course */}
       <section id="about" className="pt-28 md:pt-36 pb-20 md:pb-32 bg-background">
@@ -91,6 +107,8 @@ export default function Individual() {
                 src={servicePublic}
                 alt="Účastnice individuálního make-up kurzu Master Your Face"
                 className="w-full h-full object-cover"
+                loading="lazy"
+                decoding="async"
               />
             </div>
           </div>
