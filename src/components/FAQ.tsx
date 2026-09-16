@@ -79,11 +79,17 @@ export const FAQ = ({ className = "bg-background" }: FAQProps) => {
       answer: "U individuálních workshopů doporučujeme 2–4 týdny předem. Firemní workshopy a portréty je dobré rezervovat alespoň 4–6 týdnů dopředu.",
     },
     {
-      question: "Lze kurz zakoupit jako dárkový voucher?",
+      question: "Lze zakoupit dárkový voucher?",
       answer: (
         <div className="space-y-4">
           <p>
-            Ano! Kurz můžete zakoupit jako originální dárek. Postup je následující:
+            Voucher Master Your Face je krásný dárek pro každou ženu, která se chce naučit líčit sama sebe a cítit se ve svém make-upu skvěle.
+          </p>
+          <p>
+            Voucher lze využít na skupinový kurz Master Your Face, nebo po předchozí domluvě také na osobní privátní kurz, který přizpůsobím individuálně vašim časovým možnostem, potřebám a přáním.
+          </p>
+          <p className="font-medium text-neutral-900 pt-1">
+            Jak voucher zakoupit:
           </p>
           <ol className="list-decimal list-inside space-y-2 marker:text-primary">
             <li>
