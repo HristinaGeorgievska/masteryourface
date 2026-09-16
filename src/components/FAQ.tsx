@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import {
   Accordion,
   AccordionContent,
@@ -88,24 +87,6 @@ export const FAQ = ({ className = "bg-background" }: FAQProps) => {
           <p>
             Voucher lze využít na skupinový kurz Master Your Face, nebo po předchozí domluvě také na osobní privátní kurz, který přizpůsobím individuálně vašim časovým možnostem, potřebám a přáním.
           </p>
-          <p className="font-medium text-neutral-900 pt-1">
-            Jak voucher zakoupit:
-          </p>
-          <ol className="list-decimal list-inside space-y-2 marker:text-primary">
-            <li>
-              V rezervačním systému TidyCal vyberte{" "}
-              <Link to="/individual#dates" className="underline hover:text-primary transition-colors">
-                termín kurzu
-              </Link>
-              , který chcete darovat.
-            </li>
-            <li>
-              Kurz zakoupíte <strong>pod jménem toho, komu jej chcete darovat</strong>, ale zadáte <strong>svůj vlastní e-mail</strong>, aby obdarovanému nepřišel potvrzovací e-mail a nezkazilo se překvapení.
-            </li>
-            <li>
-              Níže klikněte na tlačítko, kde si můžete prohlédnout všechny 3 designové varianty voucheru a stáhnout si vybrané PDF.
-            </li>
-          </ol>
           <div className="pt-2">
             <button
               type="button"
